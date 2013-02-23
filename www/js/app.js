@@ -10,12 +10,12 @@
 			this.beforeClose();
 		}
 		this.undelegateEvents();
-		this.remove(); 
+		this.remove();
 	};
 	footprint.Router = Parse.Router.extend({
 
 		routes: {
-			'': 			"login", 
+			'': 			"login",
 		},
 
 		initialize: function() {
@@ -59,7 +59,7 @@
 		},
 
 		login: function() {
-			slidePage(new footprint.views.LoginView().render());
+			//this.slidePage(new footprint.views.LoginView().render());
 		},
 
 		slidePage: function(page) {
@@ -91,5 +91,5 @@
 				_this.currentPage = page;
 			});
 		},
-	})
-}).call(this)
+	});
+}).call(this);

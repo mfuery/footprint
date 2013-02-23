@@ -4,21 +4,25 @@
 	<script type="text/javascript" src="http://localhost:8080/target/target-script-min.js#anonymous"></script>
 </head>
 <body>
+  <div id="fb-root"></div>
 	<div id="content"></div>
 	<script type="text/javascript" src="cordova-2.4.0.js"></script>
 	<script type="text/javascript" src="js/lib/jquery.js"></script>
 	<script type="text/javascript" src="js/lib/underscore.js"></script>
 	<script type="text/javascript" src="js/lib/parse.js"></script>
 	<script type="text/javascript" src="js/lib/handlebars.js"></script>
+  <!-- facebook js sdk -->
+  <script src="js/lib/facebook_js_sdk.js"></script> 
+  <!-- cordova facebook plugin -->
+  <script src="js/lib/cdv-plugin-fb-connect.js"></script>
 	<script type="text/javascript" src="js/app.js"></script>
 	<script type="text/javascript" src="js/utils.js"></script>
 	<script type="text/javascript" src="js/login.js"></script>
     <script type="text/javascript">
-        Parse.initialize("GejzV5ros8VQQleYBVpXRWhlSw4nZMmRbevIpI1g", "E84wI7LYzQXIoUVyhV3tcWpA6YEwcV1MAR3hc0Aj");
-        footprint.utils.templateLoader.load(['login'], function(){
-        	footprint.app = new footprint.Router();
-        	Parse.History.start();
-        });
-
+	    Parse.initialize("GejzV5ros8VQQleYBVpXRWhlSw4nZMmRbevIpI1g", "E84wI7LYzQXIoUVyhV3tcWpA6YEwcV1MAR3hc0Aj");
+	    footprint.utils.templateLoader.load(['login'], function(){
+	    	footprint.app = new footprint.Router();
+	    	Parse.history.start();
+	    });
     </script>
 </body>
