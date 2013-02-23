@@ -15,7 +15,7 @@
   footprint.Router = Parse.Router.extend({
 
 		routes: {
-			'': 			"login",
+			'login': 			"login",
 			'test': 		"clickTest",
 			'create': 		"makeMessage",
 		},

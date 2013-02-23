@@ -24,8 +24,9 @@
 		  //this.fbScriptLoader.call(this);
 		},
 
-    initialize: function() {
-      this.template = Handlebars.compile(footprint.utils.templateLoader.get('login'));
+    render: function () {
+      $(this.el).append(this.template());
+      return this;
     },
 
 		fbButtonTouch: function() {
