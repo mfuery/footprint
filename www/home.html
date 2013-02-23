@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script type="text/javascript" src="http://localhost:8080/target/target-script-min.js#anonymous"></script>
+</head>
+<body>
+	<div id="content"></div>
+	<script type="text/javascript" src="cordova-2.4.0.js"></script>
+	<script type="text/javascript" src="js/lib/parse-1.2.1.min.js"></script>
+	<script type="text/javascript" src="js/lib/handlebars.js"></script>
+	<script type="text/javascript"></script>
+    <script type="text/javascript">
+        Parse.initialize("GejzV5ros8VQQleYBVpXRWhlSw4nZMmRbevIpI1g", "E84wI7LYzQXIoUVyhV3tcWpA6YEwcV1MAR3hc0Aj");
+        footprint.utils.templateLoader.load(['login'], function(){
+        	footprint.app = new footprint.Router();
+        	Parse.History.start();
+        });
+
+    </script>
+</body>
