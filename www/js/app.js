@@ -1,24 +1,26 @@
 (function() {
-	var window.footprint = {
+	window.footprint = {
 		models: {},
 		views: {},
 		utils: {},
 	};
 
-	Backbone.View.prototype.close = function() {
+	window._ = require('underscore');
+
+	Parse.View.prototype.close = function() {
 		if (this.beforeClose) {
 			this.beforeClose();
 		}
 		this.undelegateEvents();
 		this.remove(); 
 	};
-	footprint.Router = Backbone.Router.extend({
+	footprint.Router = Parse.Router.extend({
 
 		routes: {
 			'': 			"login", 
 		},
 
-		initialize: {
+		initialize: function() {
 			var _this = this;
 			this.pageHistory = [];
 
@@ -49,11 +51,11 @@
 
 		selectItem: function(event) {
 			$(event.target).addClass('tappable-active');
-		}
+		},
 
 		deselectItem: function(event) {
 			$(event.target).removeClass('tappable-active');
-		}
+		},
 
 		login: function() {
 			new LoginView({model:parse.User.Facebook})

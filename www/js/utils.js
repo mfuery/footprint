@@ -6,7 +6,8 @@
 			deferreds = [];
 			$.each(names, function(index, name) {
 				return deferreds.push($.get('js/templates/' + name + '.hb', function(data) {
-					return _this.templates[names] = data;
+					console.log('loaded');
+					return _this.templates[name] = data;
 				}));
 			});
 			return $.when.apply(null, deferreds).done(callback);
@@ -25,7 +26,7 @@
 		if (navigator.notification) {
 			return navigator.notification.alert(message, null, title, 'OK');
 		} else {
-			reutrn alert(title + ": " + message);
+			return alert(title + ": " + message);
 		}
 	};
 }).call(this);
