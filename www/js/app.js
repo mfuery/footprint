@@ -1,27 +1,28 @@
 (function() {
-	window.footprint = {
-		models: {},
-		views: {},
-		utils: {},
-	};
+  window.footprint = {
+    models: {},
+    views: {},
+    utils: {},
+  };
 
-	Parse.View.prototype.close = function() {
-		if (this.beforeClose) {
-			this.beforeClose();
-		}
-		this.undelegateEvents();
-		this.remove(); 
-	};
-	footprint.Router = Parse.Router.extend({
+  Parse.View.prototype.close = function() {
+    if (this.beforeClose) {
+      this.beforeClose();
+    }
+    this.undelegateEvents();
+    this.remove(); 
+  };
+  footprint.Router = Parse.Router.extend({
 
 		routes: {
 			'': 			"login", 
-			'test': 		"clickTest",	 
+			'test': 		"clickTest",
+			'create': 		"makeMessage",	 
 		},
 
-		initialize: function() {
-			var _this = this;
-			this.pageHistory = [];
+    initialize: function() {
+      var _this = this;
+      this.pageHistory = [];
 
 			$('#content').on('click', '.header-back-button', function(event) {
 				window.history.back();
@@ -51,13 +52,18 @@
 			//$('#content').append(loginView.el);
 		},
 
-		selectItem: function(event) {
-			$(event.target).addClass('tappable-active');
-		},
+      // var loginView = new footprint.views.LoginView();
+      // $('#content').append(messageCreateView.el);
 
-		deselectItem: function(event) {
-			$(event.target).removeClass('tappable-active');
-		},
+    },
+
+    selectItem: function(event) {
+      $(event.target).addClass('tappable-active');
+    },
+
+    deselectItem: function(event) {
+      $(event.target).removeClass('tappable-active');
+    },
 
 		login: function() {
 			this.slidePage(new footprint.views.LoginView().render());
@@ -65,6 +71,10 @@
 
 		clickTest: function() {
 			navigator.notification.alert('test click event', null);
+		},
+
+		makeMessage: function() {
+			this.slidePage(new footprint.views.MessageCreateView().render())
 		},
 
 		slidePage: function(page) {
@@ -102,3 +112,4 @@
 		},
 	})
 }).call(this)
+
