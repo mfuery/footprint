@@ -1,6 +1,10 @@
 (function(){
   footprint.views.LoginView = Parse.View.extend({
 
+    events: {
+      'click':      'clickEvent',
+    },
+
     initialize: function() {
       this.template = Handlebars.compile(footprint.utils.templateLoader.get('login'));
     },
@@ -14,7 +18,7 @@
       console.log('touch');
       navigator.notification.alert('click event', null);
     }
-
+  });
 
   footprint.views.MessageCreateView = Parse.View.extend({
     
@@ -42,12 +46,11 @@
         image.src = "data:image/jpeg;base64," + imageData;
       }
 
-
       function onFail(message) {
-        alert('Failed because: ' + message);
+        navigator.notification.alert('Failed because: ' + message);
       }
       
-      alert('finally making some progress');
+      navigator.notification.alert('finally making some progress');
       return false;
     }
 

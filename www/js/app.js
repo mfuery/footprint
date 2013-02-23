@@ -55,8 +55,6 @@
       // var loginView = new footprint.views.LoginView();
       // $('#content').append(messageCreateView.el);
 
-    },
-
     selectItem: function(event) {
       $(event.target).addClass('tappable-active');
     },
