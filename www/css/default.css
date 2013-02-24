@@ -1,3 +1,8 @@
+.bottom-shadow {
+  -webkit-box-shadow: 0 2px 12px -2px #000000;
+  -moz-box-shadow: 0 2px 12px -2px #000000;
+  box-shadow: 0 2px 12px -2px #000000;
+}
 body {
   /* IE10 Consumer Preview */
   background-image: -ms-radial-gradient(center, ellipse farthest-corner, #3b3b3b 0%, #2b2b2b 100%);
@@ -11,21 +16,35 @@ body {
   background-image: -webkit-radial-gradient(center, ellipse farthest-corner, #3b3b3b 0%, #2b2b2b 100%);
   /* W3C Markup, IE10 Release Preview */
   background-image: radial-gradient(ellipse farthest-corner at center, #3b3b3b 0%, #2b2b2b 100%);
+  display: block;
+  padding: 0 10px 0 10px;
+  margin: 0;
+  color: #c8c8c8;
+}
+.container {
+  position: absolute;
+  width: 280px;
+  top: 63px;
+}
+.navbar-fixed-top {
+  margin-bottom: 0;
+  -webkit-box-shadow: 0 2px 12px -2px #000000;
+  -moz-box-shadow: 0 2px 12px -2px #000000;
+  box-shadow: 0 2px 12px -2px #000000;
 }
 #content {
   height: 480px;
   width: 100%;
-  position:absolute;
-  z-index:-1;
+  position: absolute;
+  z-index: -1;
   top: 40px;
-  bottom:0;
-  left:0;
+  bottom: 0;
+  left: 0;
   overflow: visible;
-  display:block;
+  display: block;
 }
-
 div.sub-content {
-  display:block; 
-  width:97%; 
+  display: block;
+  width: 97%;
   padding: 16px 0 0 16px;
 }
