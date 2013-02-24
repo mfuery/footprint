@@ -3,7 +3,7 @@
 
 <h2>Upload a new message!</h2>
 
-<button id="upload_picture">insert dick pic</button>
+<button class="upload_picture">insert dick pic</button>
 
 <img id="my_picture" src="" style="width: 100%;" />
 
