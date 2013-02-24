@@ -10,14 +10,14 @@
       this.beforeClose();
     }
     this.undelegateEvents();
-    this.remove(); 
+    this.remove();
   };
   footprint.Router = Parse.Router.extend({
 
 		routes: {
-			'': 			"login", 
+			'login': 			"login",
 			'test': 		"clickTest",
-			'create': 		"makeMessage",	 
+			'create': 		"makeMessage",
 		},
 
     initialize: function() {
@@ -108,6 +108,5 @@
 			$(page.el).attr('class', 'page stage-center transition');
 			_this.currentPage = page;
 		},
-	})
-}).call(this)
-
+	});
+}).call(this);

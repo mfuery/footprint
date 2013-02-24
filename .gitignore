@@ -1,2 +1,5 @@
-android/bin/.DS_Store.project.settings/cordova-2.4.0.js
+android/bin/
 .DS_Store
+.project
+.settings/
+cordova-2.4.0.js
