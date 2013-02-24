@@ -1,3 +1,4 @@
+<div class="sub-content">
 <h1>Other options</h1>
 
 <h2>{{ title }}</h2>
@@ -8,7 +9,7 @@
 <div class="form-actions">
   <button id="upload_message" type="submit" class="btn btn-primary">Upload Message</button>
 
-<img id="my_picture" src="" style="width: 100%;" />
+<img id="my_picture" src="" style="width: 97%;" />
 
 
 <fieldset>
@@ -28,4 +29,5 @@
     id="message_recipients" value="{{recipients}}" placeholder="Recipient ID">
   </div>
 </fieldset>
+</div>
 </div>

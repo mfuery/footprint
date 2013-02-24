@@ -25,6 +25,10 @@
 }
 body {
 	.radialGradient( #3b3b3b, #2b2b2b);
+  display:block;
+  padding:0 10px 0 10px;
+  margin:0;
+  color:rgb(200,200,200);
 }
 .container {
 	position: absolute;
@@ -38,9 +42,18 @@ body {
 #content {
 	height: 480px;
 	width: 100%;
+
+  position:absolute;
+  z-index:-1;
+  top: 40px;
+  bottom:0;
+  left:0;
+  overflow: visible;
+  display:block;
 }
-#makeMessage {
-	position: absolute;
-	height: 480-83px;
-	width: 280px;
+
+div.sub-content {
+  display:block; 
+  width:97%; 
+  padding: 16px 0 0 16px;
 }

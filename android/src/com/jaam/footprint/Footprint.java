@@ -19,8 +19,10 @@
 
 package com.jaam.footprint;
 
+import org.apache.cordova.Config;
+import org.apache.cordova.DroidGap;
+
 import android.os.Bundle;
-import org.apache.cordova.*;
 
 public class Footprint extends DroidGap
 {
