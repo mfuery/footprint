@@ -1,3 +1,8 @@
+.bottom-shadow {
+  -webkit-box-shadow: 0 2px 12px -2px #000000;
+  -moz-box-shadow: 0 2px 12px -2px #000000;
+  box-shadow: 0 2px 12px -2px #000000;
+}
 body {
   /* IE10 Consumer Preview */
   background-image: -ms-radial-gradient(center, ellipse farthest-corner, #3b3b3b 0%, #2b2b2b 100%);
@@ -12,7 +17,23 @@ body {
   /* W3C Markup, IE10 Release Preview */
   background-image: radial-gradient(ellipse farthest-corner at center, #3b3b3b 0%, #2b2b2b 100%);
 }
+.container {
+  position: absolute;
+  width: 280px;
+  top: 63px;
+}
+.navbar-fixed-top {
+  margin-bottom: 0;
+  -webkit-box-shadow: 0 2px 12px -2px #000000;
+  -moz-box-shadow: 0 2px 12px -2px #000000;
+  box-shadow: 0 2px 12px -2px #000000;
+}
 #content {
   height: 480px;
   width: 100%;
+}
+#makeMessage {
+  position: absolute;
+  height: 397px;
+  width: 280px;
 }
