@@ -24,3 +24,8 @@ body {
   display:block;
 }
 
+div.sub-content {
+  display:block; 
+  width:97%; 
+  padding: 16px 0 0 16px;
+}

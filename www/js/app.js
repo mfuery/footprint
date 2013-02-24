@@ -27,9 +27,9 @@
       'test': "clickTest",
       'message_create': "createMessage",
       'profile':  "myProfile",
-      'search': 'search'
+      'search': 'search',
+      'dashboard': 'dashboard',
     },
-    
     initialize: function() {
       var _this = this;
       this.pageHistory = [];
@@ -92,6 +92,10 @@
 
     search: function() {
       $(".navbar").append(new footprint.views.SearchView().render().el);
+    },
+
+    dashboard: function() {
+      this.slidePage(new footprint.views.TabbedNavView().render());
     },
 
     slidePage: function(page) {

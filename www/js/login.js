@@ -15,6 +15,11 @@
 
     render: function() {
       $(this.el).append(this.template());
+
+      // Remove me (shortcircuit to dashboard)
+      $('#content').after(new footprint.views.TabbedNavView().render().el);
+
+
       return this;
     },
 
@@ -37,6 +42,10 @@
               console.log("User logged in through Facebook!");
             }
             showAlert("User login success!", "SUCCESS");
+
+            // Begin loading dashboard, via tabbed nav controls
+            $('#content').after(new footprint.views.TabbedNavView().render().el);
+
           },
           error: function(user, error) {
             console.log(error);
@@ -48,30 +57,5 @@
        });
 		}
 
-	});
-
-	/**
-	 *
-	 */
-  footprint.views.TabbedNavView = Parse.View.extend({
-    id: 'tabbedNav',
-    events: {},
-    initialize: function() {
-      this.template = Handlebars.compile(footprint.utils.templateLoader.get('tabbedNav'));
-      this.imageData = '';
-    },
-
-    render: function () {
-      var _this = this;
-      $(this.el).append(this.template({ 'content': 'this content is json dynamic!', 'id': '1', 'notes': 'notes' }));
-      $(this.el).addClass('scroll');
-      var timeout = setTimeout(function() {
-        // we need to wait a split-second before we attach and activate the scrollbars
-        _this.iscroll = new iScroll(_this.el, {hScrollbar:false,vScrollbar:false});
-        clearTimeout(timeout);
-      }, 200);
-
-      return this;
-    },
   });
 }).call(this)
