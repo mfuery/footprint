@@ -13,7 +13,7 @@
 	    // Additional initialization code such as adding Event Listeners goes here
 		},
 
-    render: function () {
+    render: function() {
       $(this.el).append(this.template());
       return this;
     },
@@ -55,15 +55,16 @@
     id: 'makeMessage',
 
     events: {
-      'click #upload_picture': 'capturePhoto',
+      'click .upload_picture': 'capturePhoto',
       'click #render_page_two': 'renderPageTwo',
       'click #upload_message': 'submit'
     },
 
     initialize: function() {
       this.template = Handlebars.compile(footprint.utils.templateLoader.get('messageCreate'));
+      this.imageData = '';
     },
-
+    
     render: function () {
       var _this = this;
       $(this.el).append(this.template({ 'content': 'this content is json dynamic!', 'id': '1', 'notes': 'notes' }));
@@ -82,6 +83,73 @@
 
       var Message = Parse.Object.extend("Message");
       var message = new Message();
+//      message.set('message', message_text);
+//      message.set('recipients', message_recipients);
+
+      console.log('imagedata: '+this.imageData);
+      var serverUrl = 'https://api.parse.com/1/files/temp.jpg';
+      console.log('serverurl'+serverUrl);
+
+      $.ajax({
+        type: "POST",
+        beforeSend: function(request) {
+          request.setRequestHeader("X-Parse-Application-Id", 'GejzV5ros8VQQleYBVpXRWhlSw4nZMmRbevIpI1g');
+          request.setRequestHeader("X-Parse-REST-API-Key", 'J0GNoC5iJT3dF0FRdYmq8oLm44Xi5lIHmaFsxUrT');
+          request.setRequestHeader("Content-Type", 'image/jpeg');
+        },
+        url: serverUrl,
+        data: this.imageData,
+        processData: false,
+        contentType: false,
+        success: function(data) {
+          //Change variable to reflect your class to upload to
+          var classUrl = "https://api.parse.com/1/classes/Message"
+
+          if(data) {
+            var fileName = "" + data.name;
+            console.log(data).url;
+            $.ajax({
+              type: "POST",
+              beforeSend: function(request) {
+                request.setRequestHeader("X-Parse-Application-Id", 'GejzV5ros8VQQleYBVpXRWhlSw4nZMmRbevIpI1g');
+                request.setRequestHeader("X-Parse-REST-API-Key", 'J0GNoC5iJT3dF0FRdYmq8oLm44Xi5lIHmaFsxUrT');
+                request.setRequestHeader("Content-Type", 'application/json');}
+              ,
+              url: classUrl,
+              data: '{\"name\" : \"An Image\", \"image\" : {\"name\" : '+"\""+fileName+"\""+', \"__type\" : \"File\"}}',
+              processData: false,
+
+              success: function(data) {
+                console.log("Image successfully uploaded.");
+              },
+              error: function(error) {
+                console.log("Error: " + error.message);
+              }
+            });
+          }
+          
+          // console.log(data.name);
+          // console.log(data);
+          // navigator.notification.alert('holy fucking shit batman', null);
+
+          // message.save({ message: message_text,
+          //                recipients: message_recipients,
+          //                image: {
+          //                  name: data.name,
+          //                  __type: "File"
+          //                }
+          //              }, 
+          //              { success: function() {
+          //                navigator.notification.alert('successful save', null);
+          //              }, error: function() { 
+          //                navigator.notification.alert('is this lvoe?', null);
+          //              }});
+        },
+        error: function(data) {
+          var obj = jQuery.parseJSON(data);
+          alert(obj.error);
+        }
+      });
 
       message.set('message', message_text);
       message.set('recipients', message_recipients);
@@ -102,24 +170,36 @@
     },
 
     capturePhoto: function() {
-      navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
-           destinationType: Camera.DestinationType.FILE_URI, sourceType: source });
+      var self = this;
+      navigator.camera.getPicture(onSuccess, onFail, { quality: 10,
+                 destinationType: Camera.DestinationType.DATA_URL }); 
 
-      function onSuccess(imageURI) {
+      // function onSuccess(imageURI) {
+      //   var image = document.getElementById('my_picture');
+      //   image.src = imageURI;
+      //   self.imageURI = imageURI;
+      //   navigator.notification.alert(imageURI, null);
+      // }
+      function onSuccess(imageData) {
         var image = document.getElementById('my_picture');
-        image.src = imageURI;
-        uploadPhoto(imageURI);
+        image.src = "data:image/jpeg;base64," + imageData;
+        self.imageData = imageData;
+        navigator.notification.alert(imageData, null);
       }
 
       function onFail(message) {
         navigator.notification.alert('Failed because: ' + message);
       }
-
+      
       navigator.notification.alert('finally making some progress');
       return false;
     },
 
+    upload: function(imageURI) {
+    },
+
     uploadPhoto: function (imageURI) {
+      navigator.notification.alert("whoa baby", null);
       console.log(imageURI);
 
       function win(r) {
