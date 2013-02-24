@@ -3,3 +3,8 @@ android/bin/
 .project
 .settings/
 cordova-2.4.0.js
+
+# node stuff
+/node_modules
+package.json
+server.js
