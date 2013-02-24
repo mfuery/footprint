@@ -22,7 +22,7 @@
         $(this.el).addClass("btn-group navbar-inverse navbar-fixed-top");
         // this.rendered = true;
         if (!this.currentTab) {
-          this.currentTab = new footprint.views.HomeView().render();
+          this.currentTab = new footprint.views.MessageIndexView().render();
           $('#content').append(this.currentTab.el);
         }
         return this;
@@ -38,7 +38,7 @@
     clickHomeBtn: function() {
       console.log('home tab');
       this.clickCommon();
-      this.currentTab = new footprint.views.HomeView().render();
+      this.currentTab = new footprint.views.MessageIndexView().render();
       $('#content').append(this.currentTab.el);
     },
     clickConnectBtn: function() {
