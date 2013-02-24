@@ -9,6 +9,13 @@
     if (this.beforeClose) {
       this.beforeClose();
     }
+
+    if (this.iscroll) {
+      console.log('destroying iscroll');
+      this.iscroll.destroy();
+      this.iscroll = null;
+    }
+
     this.undelegateEvents();
     this.remove();
   };
@@ -17,7 +24,7 @@
 
 		routes: {
 			'': 			"login",
-			'test': 		"clickTest",
+			'test': 		  "clickTest",
 			'create': 		"makeMessage",
 			'profile':  "myProfile",
 		},
@@ -75,14 +82,14 @@
     },
 
     makeMessage: function() {
-      this.slidePage(new footprint.views.MessageCreateView().render())
+      this.slidePage(new footprint.views.MessageCreateView().render());
     },
 
     myProfile: function() {
       this.slidePage(new footprint.views.ProfileView().render());
     },
 
-		slidePage: function(page) {
+    slidePage: function(page) {
 			var _this = this;
 			if (!this.currentPage){
 				$(page.el).attr('class','page stage-center');

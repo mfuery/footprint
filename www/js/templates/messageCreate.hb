@@ -1,3 +1,4 @@
+<div>
 <h1>Message Create View</h1>
 
 <h2>Upload a new message!</h2>
@@ -26,4 +27,5 @@
 <div class="form-actions">
   <button id="render_page_two" type="submit" class="btn btn-primary">Save Changes</button>
   <button class="cancel btn">Close</button>
+</div>
 </div>

@@ -52,6 +52,8 @@
 
 	footprint.views.MessageCreateView = Parse.View.extend({
 
+    id: 'makeMessage',
+
     events: {
       'click #upload_picture': 'capturePhoto',
       'click #render_page_two': 'renderPageTwo',
@@ -63,7 +65,14 @@
     },
 
     render: function () {
+      var _this = this;
       $(this.el).append(this.template({ 'content': 'this content is json dynamic!', 'id': '1', 'notes': 'notes' }));
+      $(this.el).addClass('scroll');
+      setTimeout(function() {
+        // we need to wait a second before we attach and activate the scrollbars
+        _this.iscroll = new iScroll(_this.el, {hScrollbar:false,vScrollbar:false});
+        _this.iscroll.refresh(); 
+      }, 100);
       return this;
     },
 
