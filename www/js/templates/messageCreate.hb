@@ -2,7 +2,6 @@
 <h2 class="pull-left">Compose</h2>
 <button id="render_page_two" type="submit" class="btn btn-primary pull-right">Save Changes</button>
 
-<img id="my_picture" src="" style="width: 100%;" />
 
 <table class="table" style="width:97%">
   <tr>
@@ -13,12 +12,13 @@
     </td>
   </tr>
   <tr>
-    <td>
+    <td style="width:64px">
       <a id="upload-picture" href="#camera">
         <i class="icon-camera" style="width:48px; height:48px;"></i>
       </a>
     </td>
-    <td> Add a photo 
+    <td>
+    <img id="my_picture" src="" style="width: 100%;" />
     </td>
   </tr>
 </table>
