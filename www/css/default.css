@@ -1,4 +1,4 @@
-#content {
+body {
   /* IE10 Consumer Preview */
   background-image: -ms-radial-gradient(center, ellipse farthest-corner, #3b3b3b 0%, #2b2b2b 100%);
   /* Mozilla Firefox */
@@ -11,6 +11,8 @@
   background-image: -webkit-radial-gradient(center, ellipse farthest-corner, #3b3b3b 0%, #2b2b2b 100%);
   /* W3C Markup, IE10 Release Preview */
   background-image: radial-gradient(ellipse farthest-corner at center, #3b3b3b 0%, #2b2b2b 100%);
+}
+#content {
   height: 480px;
   width: 100%;
   position:absolute;

@@ -18,22 +18,27 @@
 	/* W3C Markup, IE10 Release Preview */ 
 	background-image: radial-gradient(ellipse farthest-corner at center, @start 0%, @stop 100%);
 }
-
-#content {
+body {
 	.radialGradient( #3b3b3b, #2b2b2b);
+  display:block;
+  padding:0 10px 0 10px;
+  margin:0;
+  color:rgb(200,200,200);
+}
+#content {
 	height: 480px;
 	width: 100%;
+  position:absolute;
+  z-index:-1;
+  top: 40px;
+  bottom:0;
+  left:0;
+  overflow: visible;
+  display:block;
 }
 
 div.sub-content {
   display:block; 
   width:97%; 
   padding: 16px 0 0 16px;
-}
-
-body {
-  display:block;
-  padding:0 10px 0 10px;
-  margin:0;
-  color:rgb(200,200,200);
 }

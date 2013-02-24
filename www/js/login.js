@@ -21,20 +21,7 @@
 		fbButtonTouch: function() {
 		  console.log("fbButtonTouch");
       // Login to facebook button was clicked
-      Parse.FacebookUtils.logIn("", {
-//		  FB.login("", {
-        success: function(user) {
-          if (!user.existed()) {
-            console.log("User signed up and logged in through Facebook!");
-          } else {
-            console.log("User logged in through Facebook!");
-          }
-          showAlert("User login success!", "SUCCESS");
-        },
-        error: function(user, error) {
-          showAlert("User canceled the Facebook login or did not fully authorize.");
-        }
-      });
+
 
       FB.getLoginStatus(function(response) {
         if (response.status === 'connected') {
@@ -42,9 +29,22 @@
         } else if (response.status === 'not_authorized') {
           // not_authorized
         } else {
-          // not_logged_in
+          Parse.FacebookUtils.logIn("", {
+          success: function(user) {
+            if (!user.existed()) {
+              console.log("User signed up and logged in through Facebook!");
+            } else {
+              console.log("User logged in through Facebook!");
+            }
+            showAlert("User login success!", "SUCCESS");
+          },
+          error: function(user, error) {
+            console.log(error);
+            showAlert(error.message,error.code);
+          }
+        });
         }
-  console.log("fb login status: ", response, response.status)
+        console.log("fb login status: ", response, response.status)
        });
 		}
 
@@ -96,6 +96,7 @@
 
     render: function () {
       var _this = this;
+      console.log('render');
       $(this.el).append(this.template({ 'content': 'this content is json dynamic!', 'id': '1', 'notes': 'notes' }));
       $(this.el).addClass('scroll');
       var timeout = setTimeout(function() {
