@@ -5,5 +5,5 @@
       <img src="{{ image.url }}" />
     </div>
   {{/if}}
-  <p style="margin-bottom: 0; color: #999999; text-align: right;"><small>{{ createdAt }}</small></p>
+  <p style="margin-bottom: 0; color: #777777; text-align: right;"><small>{{ createdAt }}</small></p>
 </li>
