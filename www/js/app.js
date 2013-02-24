@@ -9,6 +9,13 @@
     if (this.beforeClose) {
       this.beforeClose();
     }
+
+    if (this.iscroll) {
+      console.log('destroying iscroll');
+      this.iscroll.destroy();
+      this.iscroll = null;
+    }
+
     this.undelegateEvents();
     this.remove();
   };
@@ -16,8 +23,9 @@
   footprint.Router = Parse.Router.extend({
 
 		routes: {
+
 			'login': 			"login",
-			'test': 		"clickTest",
+			'test': 		  "clickTest",
 			'create': 		"makeMessage",
 		},
 
@@ -77,7 +85,6 @@
       this.slidePage(new footprint.views.MessageCreateView().render())
     },
 
-<<<<<<< Updated upstream
 		slidePage: function(page) {
 			var _this = this;
 			if (!this.currentPage){
