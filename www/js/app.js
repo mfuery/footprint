@@ -25,6 +25,8 @@
     routes: {
       '': "login",
       'test': "clickTest",
+      'message_index': 'listMessages',
+      'message_show': 'showMessage',
       'message_create': "createMessage",
       'profile':  "myProfile",
       'search': 'search',
@@ -81,6 +83,14 @@
 
     clickTest: function() {
       navigator.notification.alert('test click event', null);
+    },
+
+    listMessages: function() {
+      this.slidePage(new footprint.views.MessageIndexView().render());
+    },
+
+    showMessage: function() {
+      this.slidePage(new footprint.views.MessageShowView().render());
     },
 
     createMessage: function() {

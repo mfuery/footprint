@@ -1,45 +1,39 @@
 <div class="sub-content">
-  <h1>Other options</h1>
-  <h2 class="pull-left">Compose</h2>
-  <button id="render_page_two" type="submit" class="btn btn-primary pull-right">Save Changes</button>
+  <h1 style="text-align: center;">New Message</h1>
 
   <img id="my_picture" src="" style="width: 100%;" />
 
-  <table class="table" style="width:97%">
-    <tr>
-      <td style="width:64px"><img id="profile-pic" src="{{fbuser.picture}}" style="width:64px; height:64px;" />
-      </td>
-      <td><textarea class="input-block-level" name="notes" id="task_notes"
-        placeholder="Write your message here" style="width:100%">{{notes}}</textarea>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <a id="upload-picture" href="#camera">
-          <i class="icon-camera" style="width:48px; height:48px;"></i>
-        </a>
-      </td>
-      <td> Add a photo 
-      </td>
-    </tr>
-  </table>
-
-  <!-- TODO mini image + mini map -->
-  <button class="upload_picture">insert dick pic</button>
-
-  <fieldset>
-    <legend>
-      Who do you want to see your message?
-    </legend>
-    <div class="control-group">
-      <label for="message_text">Message:</label>
-      <input type="text" class="input-block-level" name="text"
-      id="message_text" value="{{message}}" placeholder="Insert text message here...">
+  <div style="width: 100%">
+    <!--<div style="width: 20%; float: left;">
+      <a id="upload-picture" href="#camera">
+        <i class="icon-camera" style="width:64px; height:64px; margin: 0 10px; background: blue;">PHOTO</i>
+      </a>
+    </div>-->
+    <div style="width: 100%; float: left;">
+      <div style="margin: 0 10px;">
+        <textarea class="input-block-level" name="message_text" id="message_text"
+          placeholder="Say something!" style="height: 200px;">{{ message }}</textarea>
+      </div>
     </div>
-    <div class="control-group">
-      <label for="message_recipients">Friends:</label>
-      <input type="text" class="input-block-level" name="recipients"
-      id="message_recipients" value="{{recipients}}" placeholder="Recipient ID">
-    </div>
-  </fieldset>
+  </div>
+
+  <div style="margin: 0 10px;">
+    <a id="upload-picture" href="#camera">
+      <button class="btn pull-right">Add Media</button>
+    </a>
+  </div>
+
+  <div style="clear: both;"></div>
+  
+  <form style="margin: 10px;">
+    <fieldset>
+      <legend style="font-size: 16px; color: white;">Who do you want to see your message?</legend>
+      <label for="message_recipients">Add Friends:</label>
+      <input type="text" id="message_recipients" name="recipients" placeholder="List your friends here…">
+      <label class="checkbox">
+        <input type="checkbox"> Everyone!
+      </label>
+      <button id="upload_message" type="submit" class="btn btn-primary pull-right">Save Changes</button>
+    </fieldset>
+  </form>
 </div>
