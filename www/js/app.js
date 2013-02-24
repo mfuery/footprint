@@ -23,10 +23,10 @@
   footprint.Router = Parse.Router.extend({
 
 		routes: {
-
 			'': 			"login",
 			'test': 		  "clickTest",
 			'create': 		"makeMessage",
+			'profile':  "myProfile",
 		},
 
     initialize: function() {
@@ -82,10 +82,14 @@
     },
 
     makeMessage: function() {
-      this.slidePage(new footprint.views.MessageCreateView().render())
+      this.slidePage(new footprint.views.MessageCreateView().render());
     },
 
-		slidePage: function(page) {
+    myProfile: function() {
+      this.slidePage(new footprint.views.ProfileView().render());
+    },
+
+    slidePage: function(page) {
 			var _this = this;
 			if (!this.currentPage){
 				$(page.el).attr('class','page stage-center');
@@ -119,4 +123,5 @@
 			_this.currentPage = page;
 		},
 	});
+
 }).call(this);
