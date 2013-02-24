@@ -136,6 +136,8 @@
 			if (this.currentPage !== this.dashboardPage) {
 				this.currentPage.close();
 			} else {
+        this.currentPage.currentTab.close();
+        this.currentPage.currentTab = null;
         $(this.currentPage.el).detach();
         // this.currentPage.rendered = false;
       }
