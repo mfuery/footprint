@@ -22,13 +22,14 @@
 
   footprint.Router = Parse.Router.extend({
 
-		routes: {
-			'': 			"login",
-			'test': 		  "clickTest",
-			'create': 		"makeMessage",
-			'profile':  "myProfile",
-		},
-
+    routes: {
+      '': "login",
+      'test': "clickTest",
+      'message_create': "createMessage",
+      'profile':  "myProfile",
+      'search': 'search'
+    },
+    
     initialize: function() {
       var _this = this;
       this.pageHistory = [];
@@ -81,12 +82,16 @@
       navigator.notification.alert('test click event', null);
     },
 
-    makeMessage: function() {
+    createMessage: function() {
       this.slidePage(new footprint.views.MessageCreateView().render());
     },
 
     myProfile: function() {
       this.slidePage(new footprint.views.ProfileView().render());
+    },
+
+    search: function() {
+      $(".navbar").append(new footprint.views.SearchView().render().el);
     },
 
     slidePage: function(page) {
