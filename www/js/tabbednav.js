@@ -2,26 +2,22 @@
   footprint.views.TabbedNavView = Parse.View.extend({
     id: 'tabbed-nav-group',
     events: {
-      'click home-btn'     : "clickHomeBtn",
-      'click connect-btn'  : "clickConnectBtn",
-      'click discover-btn' : "clickDiscoverBtn",
-      'click profile-btn'  : "clickProfileBtn",
+      'click #home-btn'     : "clickHomeBtn",
+      'click #connect-btn'  : "clickConnectBtn",
+      'click #discover-btn' : "clickDiscoverBtn",
+      'click #profile-btn'  : "clickProfileBtn",
 
     },
     initialize: function() {
-      this.template = Handlebars.compile(footprint.utils.templateLoader.get('tabbedNav'));
+      this.template = Handlebars.compile(footprint.utils.templateLoader.get('tabbednav'));
     },
 
     render: function () {
       $(this.el).append(this.template());
+      $(this.el).addClass("btn-group navbar-inverse navbar-fixed-top");
       return this;
     },
 
-
-    // private members
-
-    // call .close() method upon changing view
-    currentView: null,
 
 
     // event handlers
@@ -33,14 +29,14 @@
       this.clickCommon();
     },
     clickConnectBtn: function() {
-      // todo
+      // todo facebook frens
     },
     clickDiscoverBtn: function() {
       // todo maps
     },
     clickProfileBtn: function() {
       this.clickCommon();
-      footprint.Router.slidePage(new footprint.views.ProfileView().render());
+      footprint.app.slidePage(new footprint.views.ProfileView().render());
 
     },
 

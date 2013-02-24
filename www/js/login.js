@@ -8,7 +8,9 @@
 
 		initialize: function() {
 			this.template = Handlebars.compile(footprint.utils.templateLoader.get('login'));
-			footprint.utils.fbInit();
+
+			// todo uncomment me for facebook login
+			//footprint.utils.fbInit();
 
 	    // Additional initialization code such as adding Event Listeners goes here
 		},
@@ -17,7 +19,7 @@
       $(this.el).append(this.template());
 
       // Remove me (shortcircuit to dashboard)
-      $('#content').after(new footprint.views.TabbedNavView().render().el);
+      $('#main-navbar').after(new footprint.views.TabbedNavView().render().el);
 
 
       return this;

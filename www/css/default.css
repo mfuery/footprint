@@ -48,3 +48,18 @@ div.sub-content {
   width: 97%;
   padding: 16px 0 0 16px;
 }
+
+
+
+
+
+
+#tabbed-nav-group {
+	top: 48px;
+	height: 48px;
+}
+#tabbed-nav-group button {
+  width:25%;
+  height: 72px;
+}
+
