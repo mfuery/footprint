@@ -1,5 +1,5 @@
 <li class="message">
-  <p>{{ message }}</p>
+  <p><a href="#message_show" style="color: black;">{{ message }}</a></p>
   {{#if image }}
     <div style="width: 100%; text-align: center;">
       <img src="{{ image.url }}" />
