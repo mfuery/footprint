@@ -85,7 +85,6 @@
       this.slidePage(new footprint.views.MessageCreateView().render());
     },
 
-<<<<<<< Updated upstream
     myProfile: function() {
       this.slidePage(new footprint.views.ProfileView().render());
     },
