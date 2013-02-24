@@ -38,8 +38,31 @@ body {
 }
 div.sub-content {
   display: block;
-  width: 97%;
-  padding: 16px 0 0 16px;
+  width: 100%;
+  padding: 16px 0 0;
+}
+ul#messages {
+  margin: 0;
+  padding: 0;
+  color: #111111;
+}
+ul#messages li.message {
+  list-style-type: none;
+  margin: 5px 0;
+  padding: 3px 10px;
+  background: white;
+}
+div#message {
+  height: 100%;
+  padding: 30px 0px;
+  background-color: #F64A4A;
+  color: #EEEEEE;
+}
+div#message .message-text {
+  padding: 5px 20px 0;
+}
+div#message .message-geopoint {
+  padding: 0 20px;
 }
 div.centered {
   margin: 0 auto 0 auto;
