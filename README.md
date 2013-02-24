@@ -117,3 +117,15 @@ or play-by-play tour?
 ***
 
 # 
+
+
+facebook integration
+====================
+# on windows:
+
+D:\Michael\www\footprint\android\assets>keytool -exportcert -alias androiddebugk
+ey -keystore D:\Michael\.android\debug.keystore |c:\cygwin\bin\openssl sha1 -bin
+ary | c:\cygwin\bin\openssl base64
+Enter keystore password:  android
+P7OGnSPz/jqJpW01UT6eJIq+tBw=
+

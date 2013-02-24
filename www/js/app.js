@@ -16,9 +16,10 @@
   footprint.Router = Parse.Router.extend({
 
 		routes: {
-			'login': 			"login",
+			'': 			"login",
 			'test': 		"clickTest",
 			'create': 		"makeMessage",
+			'profile':  "myProfile",
 		},
 
     initialize: function() {
@@ -77,7 +78,10 @@
       this.slidePage(new footprint.views.MessageCreateView().render())
     },
 
-<<<<<<< Updated upstream
+    myProfile: function() {
+      this.slidePage(new footprint.views.ProfileView().render());
+    },
+
 		slidePage: function(page) {
 			var _this = this;
 			if (!this.currentPage){
@@ -112,4 +116,5 @@
 			_this.currentPage = page;
 		},
 	});
+
 }).call(this);

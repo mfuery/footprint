@@ -1,27 +1,16 @@
 (function(){
 	footprint.views.LoginView = Parse.View.extend({
 	  events: {
-	    "touchend button": "fbButtonTouch",
-	    "click button": "fbButtonTouch", // for web browser support
+//      "tap #login-button": "fbButtonTouch",
+//	    "touchend #login-button": "fbButtonTouch",
+	    "click #login-button": "fbButtonTouch", // for web browser support
 	  },
 
 		initialize: function() {
 			this.template = Handlebars.compile(footprint.utils.templateLoader.get('login'));
-
-	    // init the FB JS SDK
-			// https://github.com/phonegap/phonegap-facebook-plugin
-      Parse.FacebookUtils.init({
-        appId      : '514654248576860', // App ID from the App Dashboard
-        nativeInterface: CDV.FB,
-//        useCachedDialogs: false,
-//        channelUrl : '//WWW.YOUR_DOMAIN.COM/channel.html', // Channel File for x-domain communication
-//        status     : true, // check the login status upon init?
-//        cookie     : true, // set sessions cookies to allow your server to access the session?
-//        xfbml      : true  // parse XFBML tags on this page?
-      });
+			footprint.utils.fbInit();
 
 	    // Additional initialization code such as adding Event Listeners goes here
-		  //this.fbScriptLoader.call(this);
 		},
 
     render: function () {
@@ -30,8 +19,10 @@
     },
 
 		fbButtonTouch: function() {
+		  console.log("fbButtonTouch");
       // Login to facebook button was clicked
       Parse.FacebookUtils.logIn("", {
+//		  FB.login("", {
         success: function(user) {
           if (!user.existed()) {
             console.log("User signed up and logged in through Facebook!");
@@ -44,6 +35,17 @@
           showAlert("User canceled the Facebook login or did not fully authorize.");
         }
       });
+
+      FB.getLoginStatus(function(response) {
+        if (response.status === 'connected') {
+          // connected
+        } else if (response.status === 'not_authorized') {
+          // not_authorized
+        } else {
+          // not_logged_in
+        }
+  console.log("fb login status: ", response, response.status)
+       });
 		}
 
 	});
@@ -73,16 +75,16 @@
       var message = new Message();
 
       message.set('message', message_text);
-      message.set('recipients', message_recipients);      
-      message.save(null, 
+      message.set('recipients', message_recipients);
+      message.save(null,
                       { success: function() {
                         navigator.notification.alert('successful save', null);
-                      }, error: function() { 
+                      }, error: function() {
                         navigator.notification.alert('is this lvoe?', null);
                       }});
       return false;
     },
-    
+
     renderPageTwo: function () {
       var second_template = Handlebars.compile(footprint.utils.templateLoader.get('messageEdit'));
       $(this.el).html(second_template({ title: 'hello world', id: 'goodbye world' }));
@@ -92,7 +94,7 @@
 
     capturePhoto: function() {
       navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
-           destinationType: Camera.DestinationType.FILE_URI, sourceType: source }); 
+           destinationType: Camera.DestinationType.FILE_URI, sourceType: source });
 
       function onSuccess(imageURI) {
         var image = document.getElementById('my_picture');
@@ -140,8 +142,8 @@
 
       var ft = new FileTransfer();
       ft.upload(imageURI, uri, win, fail, options);
-     
+
       return false;
-    }    
+    }
   });
 }).call(this)

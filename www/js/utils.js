@@ -29,4 +29,19 @@
 			return alert(title + ": " + message);
 		}
 	};
+
+  footprint.utils.fbInit = function() {
+    // init the FB JS SDK
+    // https://github.com/phonegap/phonegap-facebook-plugin
+    Parse.FacebookUtils.init({
+      appId      : '514654248576860', // App ID from the App Dashboard
+      nativeInterface: CDV.FB,
+//      useCachedDialogs: false,
+//      channelUrl : '//WWW.YOUR_DOMAIN.COM/channel.html', // Channel File for x-domain communication
+//      status     : true, // check the login status upon init?
+//      cookie     : true, // set sessions cookies to allow your server to access the session?
+//      xfbml      : true  // parse XFBML tags on this page?
+    });
+  };
+
 }).call(this);
