@@ -24,7 +24,7 @@
 
 		routes: {
 
-			'login': 			"login",
+			'': 			"login",
 			'test': 		  "clickTest",
 			'create': 		"makeMessage",
 		},
