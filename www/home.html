@@ -57,8 +57,10 @@
   <script type="text/javascript" src="js/views/message/create.js"></script>
   <script type="text/javascript" src="js/tabbednav.js"></script>
   <script type="text/javascript">
-//      $(document).on('deviceready',function(){
+    $(document).on('deviceready',function(){
+      console.log('deviceready');
       Parse.initialize("GejzV5ros8VQQleYBVpXRWhlSw4nZMmRbevIpI1g", "E84wI7LYzQXIoUVyhV3tcWpA6YEwcV1MAR3hc0Aj");
+      footprint.utils.fbInit();
       footprint.utils.templateLoader.load([
         'login',
         'message_create',
@@ -69,7 +71,7 @@
           footprint.app = new footprint.Router();
           Parse.history.start();
         });
-//     })
+     });
   </script>
 </body>
 </html>

@@ -10,17 +10,28 @@
 			this.template = Handlebars.compile(footprint.utils.templateLoader.get('login'));
 
 			// todo uncomment me for facebook login
-			//footprint.utils.fbInit();
+			// footprint.utils.fbInit();
 
 	    // Additional initialization code such as adding Event Listeners goes here
 		},
 
     render: function() {
-      $(this.el).append(this.template());
+      var _this = this;
+      FB.getLoginStatus(function(response) {
+        if (response.status === 'connected') {
+          console.log('navigate to dashboard');
+          footprint.Router.navigate('dashboard', {trigger:true});
+        } else if (response.status === 'not_authorized') {
+          // not_authorized
+        } else {
+          $(_this.el).append(_this.template());
+        }
+        
+        console.log("fb login status: ", response, response.status)
+       });
 
       // Remove me (shortcircuit to dashboard)
-      $('#main-navbar').after(new footprint.views.TabbedNavView().render().el);
-
+      // $('#main-navbar').after(new footprint.views.TabbedNavView().render().el);
 
       return this;
     },
@@ -29,14 +40,7 @@
 		  console.log("fbButtonTouch");
       // Login to facebook button was clicked
 
-
-      FB.getLoginStatus(function(response) {
-        if (response.status === 'connected') {
-          // connected
-        } else if (response.status === 'not_authorized') {
-          // not_authorized
-        } else {
-          Parse.FacebookUtils.logIn("", {
+          Parse.FacebookUtils.logIn("email", {
           success: function(user) {
             if (!user.existed()) {
               console.log("User signed up and logged in through Facebook!");
@@ -53,11 +57,9 @@
             console.log(error);
             showAlert(error.message,error.code);
           }
-        });
-        }
-        console.log("fb login status: ", response, response.status)
-       });
-		}
+
+		    });
+      }
 
   });
 }).call(this)
