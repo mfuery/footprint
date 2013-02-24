@@ -26,6 +26,7 @@
       '': "login",
       'test': "clickTest",
       'message_index': 'listMessages',
+      'message_indexbylocation': 'listMessagesByLocation',
       'message_show': 'showMessage',
       'message_create': "createMessage",
       'profile':  "myProfile",
@@ -87,6 +88,10 @@
 
     listMessages: function() {
       this.slidePage(new footprint.views.MessageIndexView().render());
+    },
+
+    listMessagesByLocation: function() {
+      this.slidePage(new footprint.views.MessageIndexView().renderByLocation());
     },
 
     showMessage: function() {
