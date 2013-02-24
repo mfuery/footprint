@@ -114,7 +114,11 @@
       }
 			if (!this.currentPage){
 				//$(page.el).attr('class','page stage-center');
-				$('#content').append(page.el);
+				if (page === this.dashboardPage) {
+          $('#main-navbar').after(page.el);
+        } else {
+          $('#content').append(page.el);
+        }
 				this.pageHistory = [window.location.hash];
 				this.currentPage = page;
 				return null;
@@ -123,6 +127,7 @@
 				this.currentPage.close();
 			} else {
         $(this.currentPage.el).detach();
+        // this.currentPage.rendered = false;
       }
 			// $('.stage-right .stage-left').not('#dashboardPage').remove(); // probably not needed
 			if (page === this.dashboardPage) {
