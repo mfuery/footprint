@@ -96,7 +96,10 @@
     },
 
     dashboard: function() {
-      this.slidePage(new footprint.views.TabbedNavView().render());
+      if (!this.dashboardPage) {
+        this.dashboardPage = new footprint.views.TabbedNavView();
+      }
+      this.slidePage(this.dashboardPage.render());
     },
 
     mapview: function() {
@@ -105,8 +108,12 @@
 
     slidePage: function(page) {
 			var _this = this;
+      // check is page is null if so no need to do render logic
+      if (!page) {
+        return null;
+      }
 			if (!this.currentPage){
-				$(page.el).attr('class','page stage-center');
+				//$(page.el).attr('class','page stage-center');
 				$('#content').append(page.el);
 				this.pageHistory = [window.location.hash];
 				this.currentPage = page;
@@ -114,11 +121,16 @@
 			}
 			if (this.currentPage !== this.dashboardPage) {
 				this.currentPage.close();
-			}
+			} else {
+        $(this.currentPage.el).detach();
+      }
 			// $('.stage-right .stage-left').not('#dashboardPage').remove(); // probably not needed
 			if (page === this.dashboardPage) {
-				$(page.el).attr('class', 'page stage-left');
+				//$(page.el).attr('class', 'page stage-left');
 				this.pageHistory = [window.location.hash];
+        $('#main-navbar').after(page.el);
+        this.currentPage = page;
+        return null
 			} else if (this.pageHistory.length > 1 && window.location.hash === this.pageHistory[this.pageHistory-2]) {
 				$(page.el).attr('class', 'page stage-left');
 				this.pageHistory.pop();
@@ -132,9 +144,10 @@
 			// 	$(page.el).attr('class', 'page stage-center transition');
 			// 	_this.currentPage = page;
 			// });
-			$(_this.currentPage.el).attr('class', 'page transition stage-right'); // decides which direction slide either left or right
-			$(page.el).attr('class', 'page stage-center transition');
+			//$(_this.currentPage.el).attr('class', 'page transition stage-right'); // decides which direction slide either left or right
+			//$(page.el).attr('class', 'page stage-center transition');
 			_this.currentPage = page;
+      return null;
 		},
 	});
 

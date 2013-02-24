@@ -8,7 +8,7 @@
 
 		initialize: function() {
 			this.template = Handlebars.compile(footprint.utils.templateLoader.get('login'));
-
+      this.testloggedin = false;
 			// todo uncomment me for facebook login
 			// footprint.utils.fbInit();
 
@@ -20,11 +20,13 @@
       FB.getLoginStatus(function(response) {
         if (response.status === 'connected') {
           console.log('navigate to dashboard');
-          footprint.Router.navigate('dashboard', {trigger:true});
+          footprint.app.navigate('dashboard', {trigger:true});
+          _this.testloggedin = true;
         } else if (response.status === 'not_authorized') {
           // not_authorized
         } else {
           $(_this.el).append(_this.template());
+          _this.testloggedin = false;
         }
         
         console.log("fb login status: ", response, response.status)
@@ -32,8 +34,11 @@
 
       // Remove me (shortcircuit to dashboard)
       // $('#main-navbar').after(new footprint.views.TabbedNavView().render().el);
-
-      return this;
+      if (this.testloggedin) {
+        return null;
+      } else {
+        return this;
+      }
     },
 
 		fbButtonTouch: function() {

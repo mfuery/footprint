@@ -10,15 +10,18 @@
     },
     initialize: function() {
       this.template = Handlebars.compile(footprint.utils.templateLoader.get('tabbednav'));
+      this.rendered = false;
     },
 
     render: function () {
-      $(this.el).append(this.template());
-      $(this.el).addClass("btn-group navbar-inverse navbar-fixed-top");
-      return this;
+      if (this.rendered){
+        return null;
+      } else {
+        $(this.el).append(this.template());
+        $(this.el).addClass("btn-group navbar-inverse navbar-fixed-top");
+        return this;
+      }
     },
-
-
 
     // event handlers
 
