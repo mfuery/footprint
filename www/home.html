@@ -2,12 +2,14 @@
 <html>
 <head>
 		<meta charset="utf-8"/>
-		<title></title>
+		<title>Footprint</title>
 		<!--[if lt IE 9]>
 			<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
 		<link rel="stylesheet" media="all" href=""/>
-		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		<!-- Adding "maximum-scale=1" fixes the Mobile Safari auto-zoom bug: http://filamentgroup.com/examples/iosScaleBug/ -->
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.min.css">
@@ -15,19 +17,19 @@
     <link rel="stylesheet" type="text/css" href="css/index.css"> 
 
 </head>
-<body style="color:rgb(200,200,200);">
-	<div id="content">
+<body>
+  <div id="fb-root"></div>
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <img src="img/logo/logo.png" class="pull-left" style="height:40px; padding:4px 0 4px 12px;" />
-	      <ul class="nav pull-right">
-	        <li><a href="#search"><img class="nav-icon" src="img/icon/search.png" /></a></li>
-	        <li><a href="#create"><img class="nav-icon" src="img/icon/add.png" /></a></li>
-	       </ul>
+        <ul class="nav pull-right">
+          <li><a href="#search"><img class="nav-icon" src="img/icon/search.png" /></a></li>
+          <li><a href="#create"><img class="nav-icon" src="img/icon/add.png" /></a></li>
+         </ul>
       </div>
     </div>
+	<div id="content">
   </div>
-  <div id="fb-root"></div>
 	<script type="text/javascript" src="cordova-2.4.0.js"></script>
 	<script type="text/javascript" src="js/lib/jquery.js"></script>
 <!--   // <script src="http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.js"></script> -->
@@ -45,12 +47,13 @@
 	<script type="text/javascript" src="js/login.js"></script>
   <script type="text/javascript" src="js/location.js"></script>
   <script type="text/javascript" src="js/profile.js"></script>
-    <script type="text/javascript">
-        Parse.initialize("GejzV5ros8VQQleYBVpXRWhlSw4nZMmRbevIpI1g", "E84wI7LYzQXIoUVyhV3tcWpA6YEwcV1MAR3hc0Aj");
-        footprint.utils.templateLoader.load(['login', 'messageCreate',
-        'messageEdit', 'profile'], function(){
-        	footprint.app = new footprint.Router();
-        	Parse.history.start();
-        });
-  </script>
+   <script type="text/javascript">
+      Parse.initialize("GejzV5ros8VQQleYBVpXRWhlSw4nZMmRbevIpI1g", "E84wI7LYzQXIoUVyhV3tcWpA6YEwcV1MAR3hc0Aj");
+      footprint.utils.templateLoader.load(['login', 'messageCreate',
+      'messageEdit', 'profile'], function(){
+      	footprint.app = new footprint.Router();
+      	Parse.history.start();
+      });
+
+</script>
 </body>

@@ -50,12 +50,41 @@
 
 	});
 
+	/**
+	 *
+	 */
+	footprint.views.TabbedNavView = Parse.View.extend({
+	  id: 'tabbedNav',
+	  events: {},
+    initialize: function() {
+      this.template = Handlebars.compile(footprint.utils.templateLoader.get('tabbedNav'));
+      this.imageData = '';
+    },
+
+    render: function () {
+      var _this = this;
+      $(this.el).append(this.template({ 'content': 'this content is json dynamic!', 'id': '1', 'notes': 'notes' }));
+      $(this.el).addClass('scroll');
+      var timeout = setTimeout(function() {
+        // we need to wait a split-second before we attach and activate the scrollbars
+        _this.iscroll = new iScroll(_this.el, {hScrollbar:false,vScrollbar:false});
+        clearTimeout(timeout);
+      }, 200);
+
+      return this;
+    },
+	});
+
+
+	/**
+	 *
+	 */
 	footprint.views.MessageCreateView = Parse.View.extend({
 
     id: 'makeMessage',
 
     events: {
-      'click .upload_picture': 'capturePhoto',
+      'click #upload-picture': 'capturePhoto',
       'click #render_page_two': 'renderPageTwo',
       'click #upload_message': 'submit'
     },
@@ -64,16 +93,16 @@
       this.template = Handlebars.compile(footprint.utils.templateLoader.get('messageCreate'));
       this.imageData = '';
     },
-    
+
     render: function () {
       var _this = this;
       $(this.el).append(this.template({ 'content': 'this content is json dynamic!', 'id': '1', 'notes': 'notes' }));
       $(this.el).addClass('scroll');
-      setTimeout(function() {
-        // we need to wait a second before we attach and activate the scrollbars
+      var timeout = setTimeout(function() {
+        // we need to wait a split-second before we attach and activate the scrollbars
         _this.iscroll = new iScroll(_this.el, {hScrollbar:false,vScrollbar:false});
-        _this.iscroll.refresh(); 
-      }, 100);
+        clearTimeout(timeout);
+      }, 200);
       return this;
     },
 
@@ -86,9 +115,9 @@
 //      message.set('message', message_text);
 //      message.set('recipients', message_recipients);
 
-      console.log('imagedata: '+this.imageData);
+      //console.log('imagedata: '+this.imageData);
       var serverUrl = 'https://api.parse.com/1/files/temp.jpg';
-      console.log('serverurl'+serverUrl);
+      console.log('serverurl '+serverUrl);
 
       $.ajax({
         type: "POST",
@@ -121,13 +150,15 @@
 
               success: function(data) {
                 console.log("Image successfully uploaded.");
+                footprint.iscroll.refresh();
+                footprint.iscroll.scrollTo(0,0,0);
               },
               error: function(error) {
                 console.log("Error: " + error.message);
               }
             });
           }
-          
+
           // console.log(data.name);
           // console.log(data);
           // navigator.notification.alert('holy fucking shit batman', null);
@@ -138,10 +169,10 @@
           //                  name: data.name,
           //                  __type: "File"
           //                }
-          //              }, 
+          //              },
           //              { success: function() {
           //                navigator.notification.alert('successful save', null);
-          //              }, error: function() { 
+          //              }, error: function() {
           //                navigator.notification.alert('is this lvoe?', null);
           //              }});
         },
@@ -154,25 +185,36 @@
       message.set('message', message_text);
       message.set('recipients', message_recipients);
       message.save(null,
-                      { success: function() {
-                        navigator.notification.alert('successful save', null);
-                      }, error: function() {
-                        navigator.notification.alert('is this lvoe?', null);
-                      }});
+        { success: function() {
+          navigator.notification.alert('successful save', null);
+        }, error: function() {
+          navigator.notification.alert('is this lvoe?', null);
+        }});
       return false;
     },
 
     renderPageTwo: function () {
+      var _this = this;
       var second_template = Handlebars.compile(footprint.utils.templateLoader.get('messageEdit'));
       $(this.el).html(second_template({ title: 'hello world', id: 'goodbye world' }));
+      var timeout = setTimeout(function() {
+        // we need to wait a split-second before we attach and activate the scrollbars
+        _this.iscroll.refresh();
+        clearTimeout(timeout);
+      }, 200);
 
       return false;
     },
 
     capturePhoto: function() {
       var self = this;
+      if(!navigator.camera){
+        alert("You don't have camera support!");
+        return false;
+      }
+
       navigator.camera.getPicture(onSuccess, onFail, { quality: 10,
-                 destinationType: Camera.DestinationType.DATA_URL }); 
+                 destinationType: Camera.DestinationType.DATA_URL });
 
       // function onSuccess(imageURI) {
       //   var image = document.getElementById('my_picture');
@@ -184,14 +226,14 @@
         var image = document.getElementById('my_picture');
         image.src = "data:image/jpeg;base64," + imageData;
         self.imageData = imageData;
-        navigator.notification.alert(imageData, null);
+//        navigator.notification.alert(imageData, null);
       }
 
       function onFail(message) {
         navigator.notification.alert('Failed because: ' + message);
       }
-      
-      navigator.notification.alert('finally making some progress');
+
+//      navigator.notification.alert('finally making some progress');
       return false;
     },
 

@@ -26,6 +26,11 @@
 
     render: function () {
       $(this.el).append(this.template(this.fbuser));
+      var timeout = setTimeout(function() {
+        // we need to wait a split-second before we attach and activate the scrollbars
+        footprint.iscroll.refresh();
+        clearTimeout(timeout);
+      }, 200);
       return this;
     },
 

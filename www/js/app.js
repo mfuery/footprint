@@ -34,32 +34,32 @@
       this.pageHistory = [];
 
       $('#content').on('click', '.header-back-button', function(event) {
-	window.history.back();
-	return false;
+      	window.history.back();
+      	return false;
       });
 
       if (document.documentElement.hasOwnProperty('ontouchstart')) {
-	document.addEventListener('touchmove', function(event) {
-	  event.preventDefault();
-	  return false;
-	});
-	$('#content').on('touchstart','a',function(event) {
-	  _this.selectItem(event);
-	});
-	$('#content').on('touchend','a', function(event) {
-	  _this.deselectItem(event);
-	})
+      	document.addEventListener('touchmove', function(event) {
+      	  event.preventDefault();
+      	  return false;
+      	});
+      	$('#content').on('touchstart','a',function(event) {
+      	  _this.selectItem(event);
+      	});
+      	$('#content').on('touchend','a', function(event) {
+      	  _this.deselectItem(event);
+      	})
       } else {
-	$('#content').on('mousedown','a', function(event) {
-	  this.selectItem(event);
-	});
-	$('#content').on('mousedown','a', function(event) {
-	  this.deselectItem(event);
-	} )
+      	$('#content').on('mousedown','a', function(event) {
+      	  this.selectItem(event);
+      	});
+      	$('#content').on('mousedown','a', function(event) {
+      	  this.deselectItem(event);
+      	})
       }
       // var loginView = new footprint.views.LoginView();
       // this.slidePage(loginView.render());
-      //$('#content').append(loginView.el);
+
     },
 
     // var loginView = new footprint.views.LoginView();
@@ -85,7 +85,6 @@
       this.slidePage(new footprint.views.MessageCreateView().render());
     },
 
-<<<<<<< Updated upstream
     myProfile: function() {
       this.slidePage(new footprint.views.ProfileView().render());
     },
