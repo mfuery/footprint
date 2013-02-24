@@ -51,12 +51,12 @@
 	footprint.views.MessageCreateView = Parse.View.extend({
 
     events: {
-      'click #upload_picture': 'capturePhoto'
+      'click #upload_picture': 'capturePhoto',
+      'click #render_page_two': 'renderPageTwo',
+      'click #upload_message': 'submit'
     },
 
     initialize: function() {
-//      this.model.on('change', this.render, this);
-//      this.model.on('destroy', this.render, this);
       this.template = Handlebars.compile(footprint.utils.templateLoader.get('messageCreate'));
     },
 
@@ -65,13 +65,39 @@
       return this;
     },
 
+    submit: function() {
+      var message_text = this.$el.find("input[name='text']").val();
+      var message_recipients = this.$el.find("input[name='recipients']").val();
+
+      var Message = Parse.Object.extend("Message");
+      var message = new Message();
+
+      message.set('message', message_text);
+      message.set('recipients', message_recipients);      
+      message.save(null, 
+                      { success: function() {
+                        navigator.notification.alert('successful save', null);
+                      }, error: function() { 
+                        navigator.notification.alert('is this lvoe?', null);
+                      }});
+      return false;
+    },
+    
+    renderPageTwo: function () {
+      var second_template = Handlebars.compile(footprint.utils.templateLoader.get('messageEdit'));
+      $(this.el).html(second_template({ title: 'hello world', id: 'goodbye world' }));
+
+      return false;
+    },
+
     capturePhoto: function() {
       navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
-           destinationType: Camera.DestinationType.DATA_URL});
+           destinationType: Camera.DestinationType.FILE_URI, sourceType: source }); 
 
-      function onSuccess(imageData) {
+      function onSuccess(imageURI) {
         var image = document.getElementById('my_picture');
-        image.src = "data:image/jpeg;base64," + imageData;
+        image.src = imageURI;
+        uploadPhoto(imageURI);
       }
 
       function onFail(message) {
@@ -80,7 +106,42 @@
 
       navigator.notification.alert('finally making some progress');
       return false;
-    }
+    },
 
+    uploadPhoto: function (imageURI) {
+      console.log(imageURI);
+
+      function win(r) {
+        console.log("Code = " + r.responseCode);
+        console.log("Response = " + r.response);
+        console.log("Sent = " + r.bytesSent);}
+
+
+      function fail(error) {
+        alert("An error has occurred: Code = " + error.code);
+        console.log("upload error source " + error.source);
+        console.log("upload error target " + error.target);}
+
+
+      var uri = encodeURI("https://api.parse.com/1/files/pic.jpg");
+
+      var options = new FileUploadOptions();
+      options.fileKey="file";
+      options.fileName=fileURI.substr(fileURI.lastIndexOf('/')+1);
+      options.mimeType="image/jpeg";
+
+      var headers = {
+        'X-Parse-Application-Id': 'GejzV5ros8VQQleYBVpXRWhlSw4nZMmRbevIpI1g',
+        'X-Parse-REST-API-Key': 'J0GNoC5iJT3dF0FRdYmq8oLm44Xi5lIHmaFsxUrT',
+        'Content-Type': 'image/jpeg'
+      }
+
+      options.headers = headers;
+
+      var ft = new FileTransfer();
+      ft.upload(imageURI, uri, win, fail, options);
+     
+      return false;
+    }    
   });
 }).call(this)

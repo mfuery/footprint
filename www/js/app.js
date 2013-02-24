@@ -12,6 +12,7 @@
     this.undelegateEvents();
     this.remove();
   };
+
   footprint.Router = Parse.Router.extend({
 
 		routes: {
@@ -24,36 +25,37 @@
       var _this = this;
       this.pageHistory = [];
 
-			$('#content').on('click', '.header-back-button', function(event) {
-				window.history.back();
-				return false;
-			});
-			if (document.documentElement.hasOwnProperty('ontouchstart')) {
-				document.addEventListener('touchmove', function(event) {
-					event.preventDefault();
-					return false;
-				});
-				$('#content').on('touchstart','a',function(event) {
-					_this.selectItem(event);
-				});
-				$('#content').on('touchend','a', function(event) {
-					_this.deselectItem(event);
-				})
-			} else {
-				$('#content').on('mousedown','a', function(event) {
-					this.selectItem(event);
-				});
-				$('#content').on('mousedown','a', function(event) {
-					this.deselectItem(event);
-				} )
-			}
-			// var loginView = new footprint.views.LoginView();
-			// this.slidePage(loginView.render());
-			//$('#content').append(loginView.el);
-		},
+      $('#content').on('click', '.header-back-button', function(event) {
+	window.history.back();
+	return false;
+      });
 
+      if (document.documentElement.hasOwnProperty('ontouchstart')) {
+	document.addEventListener('touchmove', function(event) {
+	  event.preventDefault();
+	  return false;
+	});
+	$('#content').on('touchstart','a',function(event) {
+	  _this.selectItem(event);
+	});
+	$('#content').on('touchend','a', function(event) {
+	  _this.deselectItem(event);
+	})
+      } else {
+	$('#content').on('mousedown','a', function(event) {
+	  this.selectItem(event);
+	});
+	$('#content').on('mousedown','a', function(event) {
+	  this.deselectItem(event);
+	} )
+      }
       // var loginView = new footprint.views.LoginView();
-      // $('#content').append(messageCreateView.el);
+      // this.slidePage(loginView.render());
+      //$('#content').append(loginView.el);
+    },
+
+    // var loginView = new footprint.views.LoginView();
+    // $('#content').append(messageCreateView.el);
 
     selectItem: function(event) {
       $(event.target).addClass('tappable-active');
@@ -63,18 +65,19 @@
       $(event.target).removeClass('tappable-active');
     },
 
-		login: function() {
-			this.slidePage(new footprint.views.LoginView().render());
-		},
+    login: function() {
+      this.slidePage(new footprint.views.LoginView().render());
+    },
 
-		clickTest: function() {
-			navigator.notification.alert('test click event', null);
-		},
+    clickTest: function() {
+      navigator.notification.alert('test click event', null);
+    },
 
-		makeMessage: function() {
-			this.slidePage(new footprint.views.MessageCreateView().render())
-		},
+    makeMessage: function() {
+      this.slidePage(new footprint.views.MessageCreateView().render())
+    },
 
+<<<<<<< Updated upstream
 		slidePage: function(page) {
 			var _this = this;
 			if (!this.currentPage){

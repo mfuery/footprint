@@ -24,6 +24,6 @@
   </div>
 </fieldset>
 <div class="form-actions">
-  <button type="submit" class="btn btn-primary">Save Changes</button>
+  <button id="render_page_two" type="submit" class="btn btn-primary">Save Changes</button>
   <button class="cancel btn">Close</button>
 </div>
