@@ -1,7 +1,6 @@
 (function(){
   footprint.views.ProfileView = Parse.View.extend({
     events: {
-//      "touchend button": "fbButtonTouch",
 //      "click button": "fbButtonTouch", // for web browser support
     },
 

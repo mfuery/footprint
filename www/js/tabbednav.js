@@ -32,12 +32,14 @@
       // todo facebook frens
     },
     clickDiscoverBtn: function() {
-      // todo maps
+      this.clickCommon();
+      footprint.app.navigate("#mapview");
+      footprint.app.slidePage(new footprint.views.MapView().render());
     },
     clickProfileBtn: function() {
       this.clickCommon();
+      footprint.app.navigate("#profile");
       footprint.app.slidePage(new footprint.views.ProfileView().render());
-
     },
 
   });

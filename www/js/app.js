@@ -29,6 +29,7 @@
       'profile':  "myProfile",
       'search': 'search',
       'dashboard': 'dashboard',
+      'mapview' : 'mapview',
     },
     initialize: function() {
       var _this = this;
@@ -96,6 +97,10 @@
 
     dashboard: function() {
       this.slidePage(new footprint.views.TabbedNavView().render());
+    },
+
+    mapview: function() {
+      this.slidePage(new footprint.views.MapView().render());
     },
 
     slidePage: function(page) {
