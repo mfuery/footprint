@@ -1,6 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
   <!-- always show -->
     <item
+        android:id="@+id/menu_refresh"
+        android:icon="@drawable/ic_menu_refresh"
+        android:showAsAction="always"
+        android:title="Refresh" />
+    <item
         android:id="@+id/menu_compose"
         android:icon="@drawable/ic_menu_edit"
         android:showAsAction="always"
@@ -9,7 +14,6 @@
     <item
         android:id="@+id/menu_map"
         android:icon="@drawable/ic_menu_mapmode"
-        android:showAsAction="always"
         android:title="Map"/>
   
   <!-- show in overflow -->

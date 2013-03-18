@@ -48,8 +48,7 @@ public class MainActivity extends Activity {
             Session fbSession = ParseFacebookUtils.getSession();
             if (fbSession.getAccessToken() != null) {
                 // User has valid session cached already. skip login screen and start main activity.
-                fbLogin(); // Log user into FB
-                drawMainScreen();
+                fbLogin(); // Log user into FB and goto main screen
             }
         }
 
@@ -68,8 +67,7 @@ public class MainActivity extends Activity {
     }
 
     public void onClickLoginButton(View view) {
-        fbLogin();
-        drawMainScreen();
+        fbLogin(); // login and go to main screen
     }
 
     public void fbLogin() {
@@ -119,7 +117,8 @@ public class MainActivity extends Activity {
                                 fbUser = graphUser;
                                 if (MainActivity.user.getString("fbId") == null) {
                                     MainActivity.user.put("fbId", fbUser.getId());
-                                    MainActivity.user.put("first_name", fbUser.getFirstName());
+                                    MainActivity.user.put("firstName", fbUser.getFirstName());
+                                    MainActivity.user.put("lastName", fbUser.getLastName());
                                     MainActivity.user.saveInBackground();
                                     saveTransaction("user-fb-saved-fbId");
                                 }
@@ -127,6 +126,7 @@ public class MainActivity extends Activity {
                         }
                     });
 
+                    startMainScreen();
                 }
             }
         });
@@ -150,7 +150,7 @@ public class MainActivity extends Activity {
         transaction.saveEventually();
     }
 
-    private void drawMainScreen() {
+    private void startMainScreen() {
         finish();
         startActivity(new Intent(this, FootprintActivity.class));
 
