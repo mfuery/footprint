@@ -48,8 +48,8 @@ implements GoogleMap.OnMapLongClickListener, GoogleMap.OnMarkerClickListener, Go
     @Override
     public void onStop() {
         super.onStop();
-        mMap.clear();
-        mMap = null;
+        //mMap.clear();
+        //mMap = null;
     }
 
     private void setupMap() {
