@@ -1,7 +1,10 @@
 android/bin/
+android-native/bin/
+android-native/gen/
 .DS_Store
+
 .project
-.settings/
+.settings
 cordova-2.4.0.js
 
 # node stuff
