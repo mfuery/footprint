@@ -16,28 +16,23 @@ import com.facebook.Session;
 import com.facebook.model.GraphUser;
 import com.parse.LogInCallback;
 import com.parse.Parse;
+import com.parse.ParseAnalytics;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
-import com.parse.ParseObject;
-import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 public class MainActivity extends Activity {
 
-    public static ParseUser user;
-    public static GraphUser fbUser;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.splash_screen);
 
         Parse.initialize(this, GlobalConstants.PARSE_APP_ID, GlobalConstants.PARSE_CLIENT_KEY);
-        user = ParseUser.getCurrentUser(); // if user login info is cached on the device already
-
-        saveTransaction("app-started");
+        ParseUser user = ParseUser.getCurrentUser(); // if user login info is cached on the device already
+        ParseAnalytics.trackAppOpened(getIntent());
+        Utility.saveTransaction("app-started");
 
         ParseFacebookUtils.initialize(getString(R.string.app_id));
 
@@ -45,24 +40,29 @@ public class MainActivity extends Activity {
             Session fbSession = ParseFacebookUtils.getSession();
             if (fbSession.getAccessToken() != null) {
                 // User has valid session cached already. skip login screen and start main activity.
-                fbLogin(); // Log user into FB and goto main screen
+                //fbLogin(); // Log user into FB and goto main screen
+                startMainScreen();
             }
-        } else {
-            // replace progress bar with login button
-            ProgressBar bar = (ProgressBar) findViewById(R.id.splash_progress_bar);
-            bar.setVisibility(View.INVISIBLE);
-            Button btn = (Button) findViewById(R.id.login_button);
-            btn.setVisibility(View.VISIBLE);
         }
+
+        setContentView(R.layout.splash_screen);
+
+        // replace progress bar with login button
+        ProgressBar bar = (ProgressBar) findViewById(R.id.splash_progress_bar);
+        bar.setVisibility(View.INVISIBLE);
+        Button btn = (Button) findViewById(R.id.login_button);
+        btn.setVisibility(View.VISIBLE);
 
     }
 
-    /* (non-Javadoc)
-     * @see android.app.Activity#onActivityResult(int, int, android.content.Intent)
-     */
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == GlobalConstants.FB_INIT_RESULT) {
+        if (requestCode == GlobalConstants.FB_INIT_RESULT && resultCode == Activity.RESULT_OK) {
             super.onActivityResult(requestCode, resultCode, data);
             ParseFacebookUtils.finishAuthentication(requestCode, resultCode, data);
 
@@ -80,29 +80,19 @@ public class MainActivity extends Activity {
     public void fbLogin() {
         ParseFacebookUtils.logIn(this, GlobalConstants.FB_INIT_RESULT, new LogInCallback() {
             @Override
-            public void done(ParseUser u, ParseException err) {
-                user = u;
+            public void done(final ParseUser user, ParseException err) {
                 if (user == null) {
                     Log.d(GlobalConstants.APP_NAME, "Uh oh. The user cancelled the Facebook login.");
                     Toast.makeText(getApplicationContext(), "Why did you cancel Facebook login?", Toast.LENGTH_LONG).show();
+                    Utility.saveTransaction("user-fb-cancelled");
 
-                    saveTransaction("user-fb-cancelled");
-
-                    //} else if (user.isNew()) {
-                    // This doesn't work properly b/c isNew() is true even when user is already on Facebook,
-                    // but ParseUser needs to be created.
-                    //Log.d(APP_NAME, "User signed up and logged in through Facebook!");
-                    //Toast.makeText(getApplicationContext(), "User created", Toast.LENGTH_LONG).show();
-                    //
-                    //saveTransaction("user-fb-signup");
-                    //
-                    //drawMainScreen();
+                    ((ProgressBar) findViewById(R.id.splash_progress_bar)).setVisibility(View.INVISIBLE);
+                    ((Button) findViewById(R.id.login_button)).setVisibility(View.VISIBLE);
 
                 } else {
                     Log.d(GlobalConstants.APP_NAME, "User logged in through Facebook");
                     Toast.makeText(getApplicationContext(), "User logged in through Facebook", Toast.LENGTH_LONG).show();
-
-                    saveTransaction("user-fb-login");
+                    Utility.saveTransaction("user-fb-login");
 
                     if (!ParseFacebookUtils.isLinked(user)) {
                         ParseFacebookUtils.link(user, MainActivity.this, GlobalConstants.FB_LINK_RESULT, new SaveCallback() {
@@ -110,7 +100,7 @@ public class MainActivity extends Activity {
                             public void done(ParseException ex) {
                                 if (ParseFacebookUtils.isLinked(user)) {
                                     Log.d("MyApp", "Woohoo, user logged in with Facebook and linked to Parse!");
-                                    saveTransaction("user-fb-linked");
+                                    Utility.saveTransaction("user-fb-linked");
                                 }
                             }
                         });
@@ -121,13 +111,12 @@ public class MainActivity extends Activity {
                         @Override
                         public void onCompleted(GraphUser graphUser, Response response) {
                             if (graphUser != null) {
-                                fbUser = graphUser;
-                                if (MainActivity.user.getString("fbId") == null) {
-                                    MainActivity.user.put("fbId", fbUser.getId());
-                                    MainActivity.user.put("firstName", fbUser.getFirstName());
-                                    MainActivity.user.put("lastName", fbUser.getLastName());
-                                    MainActivity.user.saveInBackground();
-                                    saveTransaction("user-fb-saved-fbId");
+                                if (user.getString("fbId") == null) {
+                                    user.put("fbId", graphUser.getId());
+                                    user.put("firstName", graphUser.getFirstName());
+                                    user.put("lastName", graphUser.getLastName());
+                                    user.saveInBackground();
+                                    Utility.saveTransaction("user-fb-saved-fbId");
                                 }
                             }
                         }
@@ -141,30 +130,8 @@ public class MainActivity extends Activity {
     }
 
 
-    /**
-     * Boilerplate user activity logging: logs a transaction to parse
-     * @param transactionType
-     */
-    public static void saveTransaction(final String transactionType) {
-        ParseObject transaction = new ParseObject("Transaction");
-        transaction.put("type", transactionType);
-
-        if (user != null && user.getObjectId() != null) {
-            ParseRelation rel = transaction.getRelation("user");
-            rel.add(user);
-        }
-
-        transaction.saveEventually();
-    }
-
     private void startMainScreen() {
-        ProgressBar bar = (ProgressBar) findViewById(R.id.splash_progress_bar);
-        bar.setVisibility(View.INVISIBLE);
-        Button btn = (Button) findViewById(R.id.login_button);
-        btn.setVisibility(View.INVISIBLE);
-
-        //finish();
-        //popBackStack();
+        finish();
         startActivity(new Intent(this, FootprintActivity.class));
 
     }

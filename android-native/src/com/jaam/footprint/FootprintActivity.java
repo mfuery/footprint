@@ -1,6 +1,8 @@
 package com.jaam.footprint;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
@@ -21,6 +23,7 @@ import android.widget.Toast;
 import com.facebook.Session;
 import com.google.android.gms.maps.model.LatLng;
 import com.jaam.footprint.fragments.FootprintMapFragment;
+import com.parse.Parse;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseUser;
 import com.parse.PushService;
@@ -41,6 +44,7 @@ public class FootprintActivity extends FragmentActivity implements LocationListe
         this.requestWindowFeature(Window.FEATURE_OPTIONS_PANEL);
         setContentView(R.layout.main_screen);
 
+        Parse.initialize(this, GlobalConstants.PARSE_APP_ID, GlobalConstants.PARSE_CLIENT_KEY);
         PushService.subscribe(this, "", FootprintActivity.class);
         PushService.setDefaultPushCallback(this, FootprintActivity.class);
 
@@ -122,27 +126,25 @@ public class FootprintActivity extends FragmentActivity implements LocationListe
     @Override
     public void onLocationChanged(Location loc) {
         mCurrentLocation = loc;
-        Toast.makeText(this, "onLocationChanged", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "onLocationChanged", Toast.LENGTH_SHORT).show();
         Log.d(GlobalConstants.APP_NAME, "onLocationChanged");
     }
 
     @Override
     public void onProviderDisabled(String provider) {
-        Toast.makeText(this, "onProviderDisabled", Toast.LENGTH_SHORT).show();
         Log.d(GlobalConstants.APP_NAME, "onProviderDisabled");
 
     }
 
     @Override
     public void onProviderEnabled(String provider) {
-        Toast.makeText(this, "onProviderEnabled", Toast.LENGTH_SHORT).show();
         Log.d(GlobalConstants.APP_NAME, "onProviderEnabled");
 
     }
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-        Toast.makeText(this, "onStatusChanged", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "onStatusChanged", Toast.LENGTH_SHORT).show();
         Log.d(GlobalConstants.APP_NAME, "onStatusChanged");
 
     }
@@ -210,8 +212,25 @@ public class FootprintActivity extends FragmentActivity implements LocationListe
              */
 
         case R.id.menu_logout:
-            Toast.makeText(this, "Logout selected", Toast.LENGTH_SHORT).show();
-            fbLogout();
+            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        Toast.makeText(FootprintActivity.this, "Logging you out...", Toast.LENGTH_SHORT).show();
+                        fbLogout();
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        //No button clicked
+                        break;
+                    }
+                }
+            };
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
+            .setNegativeButton("No", dialogClickListener).show();
             return true;
 
         case R.id.menu_preferences:
@@ -245,7 +264,7 @@ public class FootprintActivity extends FragmentActivity implements LocationListe
         Session fbSession = ParseFacebookUtils.getSession();
         if (!fbSession.isClosed()) {
             Log.d(GlobalConstants.APP_NAME, "fbLogout: closed");
-            MainActivity.saveTransaction("user-fb-logout");
+            //MainActivity.saveTransaction("user-fb-logout");
 
             fbSession.closeAndClearTokenInformation();
             ParseUser.logOut();
@@ -278,6 +297,7 @@ public class FootprintActivity extends FragmentActivity implements LocationListe
         Bundle bundle = new Bundle();
         bundle.putDouble(MessageActivity.KEY_LAT, getCurrentLocation().getLatitude());
         bundle.putDouble(MessageActivity.KEY_LON, getCurrentLocation().getLongitude());
+        bundle.putBoolean(MessageActivity.KEY_EDITABLE, true);
         intent.putExtras(bundle);
         startActivity(intent);
     }

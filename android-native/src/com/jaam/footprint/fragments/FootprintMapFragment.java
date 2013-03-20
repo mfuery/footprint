@@ -63,6 +63,21 @@ implements GoogleMap.OnMapLongClickListener, GoogleMap.OnMarkerClickListener, Go
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(GlobalConstants.APP_NAME, "FootprintMapFragment.onActivityResult(): " + requestCode + " " + resultCode);
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+        case GlobalConstants.RESULT_CREATE_MESSAGE:
+            //if (resultCode == Activity.RESULT_OK) {
+            refreshMapView();
+            //}
+            break;
+        default:
+            break;
+        }
+    }
+
+    @Override
     public boolean onMarkerClick(Marker marker) {
         Log.i(GlobalConstants.APP_NAME, marker.getTitle() + " : " + marker.getPosition().toString());
         return false;
@@ -94,7 +109,7 @@ implements GoogleMap.OnMapLongClickListener, GoogleMap.OnMarkerClickListener, Go
         intent.putExtra(MessageActivity.KEY_LAT, point.latitude);
         intent.putExtra(MessageActivity.KEY_LON, point.longitude);
         intent.putExtra(MessageActivity.KEY_EDITABLE, true);
-        startActivity(intent);
+        startActivityForResult(intent, GlobalConstants.RESULT_CREATE_MESSAGE);
     }
 
 
@@ -144,8 +159,8 @@ implements GoogleMap.OnMapLongClickListener, GoogleMap.OnMarkerClickListener, Go
     }
 
     public void refreshMapView() {
-        if (mMap != null) {
-            mMap.clear();
+        if (mMap == null) {
+            setupMap();
         }
 
         Log.d(GlobalConstants.APP_NAME, "getting nearby messages!");
@@ -154,7 +169,9 @@ implements GoogleMap.OnMapLongClickListener, GoogleMap.OnMarkerClickListener, Go
                 currLocation.getLongitude());
         ParseQuery query = new ParseQuery("Message");
         query.whereWithinMiles("location", userLocation, GlobalConstants.DEFAULT_NEARBY_MILES);
-        query.setLimit(10);
+        query.orderByAscending("location");
+        query.whereNotEqualTo("isDeleted", true);
+        query.setLimit(GlobalConstants.DEFAULT_NEARBY_LOCATIONS);
 
         // TODO: implement ACL vs public filtering
         query.findInBackground(new FindCallback() {
@@ -188,17 +205,21 @@ implements GoogleMap.OnMapLongClickListener, GoogleMap.OnMarkerClickListener, Go
             mMapMarkers.clear();
         }
 
+        mMap.clear();
+
         for (Entry<String, Message> el : mNearbyMessages.entrySet()) {
             Message msg = el.getValue();
             final double lat = msg.getLatitude();
             final double lon = msg.getLongitude();
-            Log.d(GlobalConstants.APP_NAME, "Add map marker for: " + lat + ", " + lon + " for: " + msg.getTitle());
-            mMapMarkers.add(
-                    mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(lat, lon))
-                    .title(msg.getTitle())
-                    .snippet(msg.getMessage())
-                    .draggable(false)));
+            Log.d(GlobalConstants.APP_NAME, "Add map marker for: " + el.getKey() + ": " + lat + ", " + lon + " for: " + msg.getTitle());
+
+            MarkerOptions mOpt = new MarkerOptions()
+            .position(new LatLng(lat, lon))
+            .title(msg.getTitle())
+            .snippet(msg.getMessage())
+            .draggable(false);
+
+            mMapMarkers.add(mMap.addMarker(mOpt));
         }
     }
 
@@ -210,6 +231,8 @@ implements GoogleMap.OnMapLongClickListener, GoogleMap.OnMarkerClickListener, Go
         if (mNearbyMessages == null) {
             mNearbyMessages = new HashMap<String, Message>();
         }
+
+        mNearbyMessages.clear();
 
         if (list == null || list.isEmpty()) {
             return;

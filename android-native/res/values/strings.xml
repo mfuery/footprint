@@ -5,14 +5,12 @@
     <string name="action_settings">Settings</string>
     <string name="app_id">514654248576860</string>
     
-    <string name="label_loading">Getting current location. Please wait...</string>
     <string name="label_name">Title</string>
     <string name="label_description">Message</string>
     <string name="label_cancel">Cancel</string>
     <string name="label_save">Save</string>
     <string name="label_place_info">Place information</string>
-    <string name="label_add_name_desc">Please give a title and message first</string>
-    <string name="label_title_already_exists">A place with a similar name already exists</string>
+    <string name="label_add_name_desc">Message must have a title</string>
     <string name="icon_camera">Camera</string>
     <string name="icon_file">File</string>
     

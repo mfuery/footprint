@@ -4,6 +4,12 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.parse.ParseObject;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
 
 public class Utility {
     public static final int MILE = 0;
@@ -79,5 +85,39 @@ public class Utility {
         return (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA));
     }
 
+    /**
+     * Seems problematic.
+     * Not sure if I want to use it, but also not sure if I want to delete it yet.
+     * @param view
+     */
+    public static void unbindDrawables(View view) {
+        if (view.getBackground() != null) {
+            view.getBackground().setCallback(null);
+        }
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                unbindDrawables(((ViewGroup) view).getChildAt(i));
+            }
+            ((ViewGroup) view).removeAllViews();
+        }
+    }
+
+
+    /**
+     * Boilerplate user activity logging: logs a transaction to parse
+     * @param transactionType
+     */
+    public static void saveTransaction(final String transactionType) {
+        ParseObject transaction = new ParseObject("Transaction");
+        transaction.put("type", transactionType);
+
+        ParseUser user = ParseUser.getCurrentUser();
+        if (user != null && user.getObjectId() != null) {
+            ParseRelation rel = transaction.getRelation("user");
+            rel.add(user);
+        }
+
+        transaction.saveEventually();
+    }
 
 }

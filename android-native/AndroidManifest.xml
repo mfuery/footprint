@@ -21,11 +21,11 @@
     
     <uses-feature android:glEsVersion="0x00020000" android:required="true"/>
     
-    <!-- Parse push notifications -->
+    <!-- Parse push notifications 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 		<uses-permission android:name="android.permission.VIBRATE" />
 		<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-		
+		-->
 		<!-- GCM / UrbanAirship cloud messaging 
     <permission android:name="com.jaam.footprint.permission.C2D_MESSAGE" android:protectionLevel="signature" />
     <uses-permission android:name="com.jaam.footprint.permission.C2D_MESSAGE" /> 

@@ -4,11 +4,11 @@ import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.jaam.footprint.GlobalConstants;
-import com.jaam.footprint.MainActivity;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseRelation;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 public class Message {
@@ -81,9 +81,10 @@ public class Message {
         msg.put("message", message);
         msg.put("location", new ParseGeoPoint(lat, lon));
 
-        if (MainActivity.user != null && MainActivity.user.getObjectId() != null) {
+        ParseUser user = ParseUser.getCurrentUser();
+        if (user != null && user.getObjectId() != null) {
             ParseRelation rel = msg.getRelation("creatorUserId");
-            rel.add(MainActivity.user);
+            rel.add(user);
         }
 
         msg.saveInBackground(new SaveCallback() {

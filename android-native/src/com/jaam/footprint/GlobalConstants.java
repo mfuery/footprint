@@ -10,6 +10,7 @@ public class GlobalConstants {
     public static final int FB_INIT_RESULT = 1;
     public static final int FB_LINK_RESULT = 2;
     public static final int IMAGE_CAPTURE = 100;
+    public static final int RESULT_CREATE_MESSAGE = 3;
 
     // (Street) Cred.
     public static final String PARSE_APP_ID = "GejzV5ros8VQQleYBVpXRWhlSw4nZMmRbevIpI1g";
@@ -23,7 +24,19 @@ public class GlobalConstants {
 
     // This determines what markers appear on the map (are pulled from Parse)
     public static final double DEFAULT_NEARBY_MILES = 15.0;
+    public static final int DEFAULT_NEARBY_LOCATIONS = 15;
 
     // Feedback button composes email with this body
-    public final static String DEFAULT_FEEDBACK_EMAIL_BODY = "Hi Footprint! I have some feedback for you below...\n\n";
+    public static final String DEFAULT_FEEDBACK_EMAIL_BODY
+    = "Hi Footprint! I have some feedback for you below..."
+            + "\n Brand: "+ android.os.Build.BRAND
+            + "\n Product: " + android.os.Build.PRODUCT
+            + "\n Manufacturer: " + android.os.Build.MANUFACTURER
+            + "\n Model: " + android.os.Build.MODEL
+            + "\n Device: " + android.os.Build.DEVICE
+            + "\n Hardware: " + android.os.Build.HARDWARE
+            + "\n Serial: " + android.os.Build.SERIAL
+            +"\n\n";
+
+
 }

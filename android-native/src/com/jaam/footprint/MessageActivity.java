@@ -20,8 +20,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jaam.footprint.domain.Message;
+import com.parse.Parse;
 
 public class MessageActivity extends Activity {
+    public interface Closure {
+        void done(boolean success);
+    }
+
     // For savedInstance bundle data
     public static final String KEY_TITLE = "title";
     public static final String KEY_MESSAGE = "message";
@@ -41,6 +46,8 @@ public class MessageActivity extends Activity {
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        Parse.initialize(this, GlobalConstants.PARSE_APP_ID, GlobalConstants.PARSE_CLIENT_KEY);
 
         bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -151,7 +158,7 @@ public class MessageActivity extends Activity {
     private void saveNewMessage() {
         String title = editTextTitle.getText().toString().trim();
         String message = editTextMessage.getText().toString().trim();
-        if (TextUtils.isEmpty(title) || TextUtils.isEmpty(message)) {
+        if (TextUtils.isEmpty(title)) {
             Toast.makeText(this, getString(R.string.label_add_name_desc), Toast.LENGTH_LONG).show();
             return;
         }
