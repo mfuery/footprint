@@ -4,6 +4,11 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry kind="lib" path="libs/Parse-1.1.16.jar"/>
 	<classpathentry kind="lib" path="libs/google-play-services.jar"/>
+	<classpathentry kind="lib" path="libs/commons-io-2.4.jar" sourcepath="libs/commons-io-2.4-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/D:/Michael/www/_src/commons-io-2.4/docs/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/facebook-android-sdk"/>
 	<classpathentry kind="src" path="gen"/>

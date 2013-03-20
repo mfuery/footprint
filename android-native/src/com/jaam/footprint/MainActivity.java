@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.facebook.Request;
@@ -22,11 +24,6 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 public class MainActivity extends Activity {
-    private static final int FB_INIT_RESULT = 1;
-    private static final int FB_LINK_RESULT = 2;
-    private static final String PARSE_APP_ID = "GejzV5ros8VQQleYBVpXRWhlSw4nZMmRbevIpI1g";
-    private static final String PARSE_CLIENT_KEY = "GvqMbgX7kCMYTX0PjwHIgMMR3jcxfp0yMMSjitp5";
-    public static final String APP_NAME = "Footprint";
 
     public static ParseUser user;
     public static GraphUser fbUser;
@@ -37,7 +34,7 @@ public class MainActivity extends Activity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.splash_screen);
 
-        Parse.initialize(this, PARSE_APP_ID, PARSE_CLIENT_KEY);
+        Parse.initialize(this, GlobalConstants.PARSE_APP_ID, GlobalConstants.PARSE_CLIENT_KEY);
         user = ParseUser.getCurrentUser(); // if user login info is cached on the device already
 
         saveTransaction("app-started");
@@ -50,6 +47,12 @@ public class MainActivity extends Activity {
                 // User has valid session cached already. skip login screen and start main activity.
                 fbLogin(); // Log user into FB and goto main screen
             }
+        } else {
+            // replace progress bar with login button
+            ProgressBar bar = (ProgressBar) findViewById(R.id.splash_progress_bar);
+            bar.setVisibility(View.INVISIBLE);
+            Button btn = (Button) findViewById(R.id.login_button);
+            btn.setVisibility(View.VISIBLE);
         }
 
     }
@@ -59,7 +62,7 @@ public class MainActivity extends Activity {
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == FB_INIT_RESULT) {
+        if (requestCode == GlobalConstants.FB_INIT_RESULT) {
             super.onActivityResult(requestCode, resultCode, data);
             ParseFacebookUtils.finishAuthentication(requestCode, resultCode, data);
 
@@ -67,16 +70,20 @@ public class MainActivity extends Activity {
     }
 
     public void onClickLoginButton(View view) {
+        ProgressBar bar = (ProgressBar) findViewById(R.id.splash_progress_bar);
+        bar.setVisibility(View.VISIBLE);
+        Button btn = (Button) findViewById(R.id.login_button);
+        btn.setVisibility(View.INVISIBLE);
         fbLogin(); // login and go to main screen
     }
 
     public void fbLogin() {
-        ParseFacebookUtils.logIn(this, FB_INIT_RESULT, new LogInCallback() {
+        ParseFacebookUtils.logIn(this, GlobalConstants.FB_INIT_RESULT, new LogInCallback() {
             @Override
             public void done(ParseUser u, ParseException err) {
                 user = u;
                 if (user == null) {
-                    Log.d(APP_NAME, "Uh oh. The user cancelled the Facebook login.");
+                    Log.d(GlobalConstants.APP_NAME, "Uh oh. The user cancelled the Facebook login.");
                     Toast.makeText(getApplicationContext(), "Why did you cancel Facebook login?", Toast.LENGTH_LONG).show();
 
                     saveTransaction("user-fb-cancelled");
@@ -92,13 +99,13 @@ public class MainActivity extends Activity {
                     //drawMainScreen();
 
                 } else {
-                    Log.d(APP_NAME, "User logged in through Facebook");
+                    Log.d(GlobalConstants.APP_NAME, "User logged in through Facebook");
                     Toast.makeText(getApplicationContext(), "User logged in through Facebook", Toast.LENGTH_LONG).show();
 
                     saveTransaction("user-fb-login");
 
                     if (!ParseFacebookUtils.isLinked(user)) {
-                        ParseFacebookUtils.link(user, MainActivity.this, FB_LINK_RESULT, new SaveCallback() {
+                        ParseFacebookUtils.link(user, MainActivity.this, GlobalConstants.FB_LINK_RESULT, new SaveCallback() {
                             @Override
                             public void done(ParseException ex) {
                                 if (ParseFacebookUtils.isLinked(user)) {
@@ -151,7 +158,13 @@ public class MainActivity extends Activity {
     }
 
     private void startMainScreen() {
-        finish();
+        ProgressBar bar = (ProgressBar) findViewById(R.id.splash_progress_bar);
+        bar.setVisibility(View.INVISIBLE);
+        Button btn = (Button) findViewById(R.id.login_button);
+        btn.setVisibility(View.INVISIBLE);
+
+        //finish();
+        //popBackStack();
         startActivity(new Intent(this, FootprintActivity.class));
 
     }

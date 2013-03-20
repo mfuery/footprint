@@ -17,7 +17,7 @@
         android:paddingTop="30dp"
         android:scaleType="fitCenter"
         android:src="@drawable/logo" android:layout_weight="1"/>
-
+<!-- 
     <Button
         android:id="@+id/login_button"
         android:layout_width="wrap_content"
@@ -25,5 +25,33 @@
         android:layout_weight="0"
         android:text="Login with Facebook"
         android:onClick="onClickLoginButton" />
+ -->
 
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <ProgressBar
+            android:id="@+id/splash_progress_bar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+
+				<Button
+				    android:id="@+id/login_button"
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:layout_alignParentTop="true"
+				    android:layout_centerHorizontal="true"
+				    android:background="@drawable/com_facebook_loginbutton_blue"
+				    android:onClick="onClickLoginButton"
+				    android:visibility="invisible"
+				    android:text="         Login with Facebook"
+				    android:textColor="@android:color/white"
+				    android:textColorHint="@android:color/white" />
+				
+    </RelativeLayout>
+ 
 </TableLayout>

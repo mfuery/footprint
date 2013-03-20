@@ -1,22 +1,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-  <!-- always show -->
     <item
         android:id="@+id/menu_refresh"
         android:icon="@drawable/ic_menu_refresh"
-        android:showAsAction="always"
+        android:showAsAction="ifRoom"
         android:title="Refresh" />
     <item
         android:id="@+id/menu_compose"
         android:icon="@drawable/ic_menu_edit"
-        android:showAsAction="always"
+        android:showAsAction="ifRoom"
         android:title="Compose"/>
-
+<!-- 
     <item
         android:id="@+id/menu_map"
         android:icon="@drawable/ic_menu_mapmode"
         android:title="Map"/>
-  
-  <!-- show in overflow -->
+-->
   <item android:id="@+id/menu_logout"
         android:icon="@drawable/ic_menu_info_details"
         android:title="Logout" />
