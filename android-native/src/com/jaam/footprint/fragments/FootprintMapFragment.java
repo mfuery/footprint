@@ -60,6 +60,13 @@ implements GoogleMap.OnMapLongClickListener, GoogleMap.OnMarkerClickListener, Go
     public void onResume() {
         super.onResume();
         setupMap();
+        /*
+        ParseUser user = ParseUser.getCurrentUser();
+        if (user != null) {
+            Log.d(GlobalConstants.APP_NAME, "Yes, user is defined: " + user.getObjectId());
+        } else {
+            Log.d(GlobalConstants.APP_NAME, "Nope, user is null!");
+        }*/
     }
 
     @Override
@@ -211,7 +218,7 @@ implements GoogleMap.OnMapLongClickListener, GoogleMap.OnMarkerClickListener, Go
             Message msg = el.getValue();
             final double lat = msg.getLatitude();
             final double lon = msg.getLongitude();
-            Log.d(GlobalConstants.APP_NAME, "Add map marker for: " + el.getKey() + ": " + lat + ", " + lon + " for: " + msg.getTitle());
+            //Log.d(GlobalConstants.APP_NAME, "Add map marker for: " + el.getKey() + ": " + lat + ", " + lon + " for: " + msg.getTitle());
 
             MarkerOptions mOpt = new MarkerOptions()
             .position(new LatLng(lat, lon))

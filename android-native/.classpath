@@ -12,5 +12,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/facebook-android-sdk"/>
 	<classpathentry kind="src" path="gen"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/UrlImageViewHelper"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
