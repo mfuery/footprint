@@ -16,6 +16,7 @@ import com.facebook.Session;
 import com.facebook.model.GraphUser;
 import com.parse.LogInCallback;
 import com.parse.Parse;
+import com.parse.ParseACL;
 import com.parse.ParseAnalytics;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
@@ -29,11 +30,16 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
+        // Initialize Parse service and global subsystems
         Parse.initialize(this, GlobalConstants.PARSE_APP_ID, GlobalConstants.PARSE_CLIENT_KEY);
         ParseUser user = ParseUser.getCurrentUser(); // if user login info is cached on the device already
         ParseAnalytics.trackAppOpened(getIntent());
         Utility.saveTransaction("app-started");
+        ParseACL defaultACL = new ParseACL();
+        defaultACL.setPublicReadAccess(true);
+        ParseACL.setDefaultACL(defaultACL, true);
 
+        // Begin user auth
         ParseFacebookUtils.initialize(getString(R.string.app_id));
 
         if (user != null && user.getObjectId() != null) {
@@ -45,6 +51,7 @@ public class MainActivity extends Activity {
             }
         }
 
+        // We get here only if user login session is not cached to disk (like a new user)
         setContentView(R.layout.splash_screen);
 
         // replace progress bar with login button
@@ -57,6 +64,7 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onDestroy() {
+        Log.d(GlobalConstants.APP_NAME, "MainActivity.onDestroy()");
         super.onDestroy();
     }
 
@@ -99,7 +107,7 @@ public class MainActivity extends Activity {
                             @Override
                             public void done(ParseException ex) {
                                 if (ParseFacebookUtils.isLinked(user)) {
-                                    Log.d("MyApp", "Woohoo, user logged in with Facebook and linked to Parse!");
+                                    Log.d(GlobalConstants.APP_NAME, "Woohoo, user logged in with Facebook and linked to Parse!");
                                     Utility.saveTransaction("user-fb-linked");
                                 }
                             }

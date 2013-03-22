@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.jaam.footprint.GlobalConstants;
+import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
@@ -18,171 +19,184 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 public class Message {
-    protected String title;
-    protected String message;
-    protected String _objectId = null;
-    protected double lat;
-    protected double lon;
-    protected String fileUri;
-    protected ParseObject parseMessage;
-    protected ParseFile parseFile;
+	protected String title;
+	protected String message;
+	protected String _objectId = null;
+	protected double lat;
+	protected double lon;
+	protected String fileUri;
+	protected ParseObject parseMessage;
+	protected ParseFile parseFile;
 
-    public Message() {
-    }
+	public Message() {
+		title = "";
+		message = "";
+		fileUri = "";
+	}
 
-    public Message(final String title, final String message, final double lat, final double lon) {
-        this.title = title;
-        this.message = message;
-        this.lat = lat;
-        this.lon = lon;
-    }
+	public Message(final String title, final String message, final double lat, final double lon) {
+		this.title = title;
+		this.message = message;
+		this.lat = lat;
+		this.lon = lon;
+		this.fileUri = "";
+	}
 
-    public String getObjectId() {
-        return _objectId;
-    }
+	public String getObjectId() {
+		return _objectId;
+	}
 
-    public void setObjectId(final String objectId) {
-        this._objectId = objectId;
-    }
+	public void setObjectId(final String objectId) {
+		this._objectId = objectId;
+	}
 
-    public double getLatitude() {
-        return lat;
-    }
+	public double getLatitude() {
+		return lat;
+	}
 
-    public void setLatitude(final double latitude) {
-        this.lat = latitude;
-    }
+	public void setLatitude(final double latitude) {
+		this.lat = latitude;
+	}
 
-    public double getLongitude() {
-        return lon;
-    }
+	public double getLongitude() {
+		return lon;
+	}
 
-    public void setLongitude(final double longitude) {
-        this.lon = longitude;
-    }
+	public void setLongitude(final double longitude) {
+		this.lon = longitude;
+	}
 
-    public String getTitle() {
-        return title;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public void setTitle(final String title) {
-        this.title = title;
-    }
+	public void setTitle(final String title) {
+		this.title = title;
+	}
 
-    public String getMessage() {
-        return message;
-    }
+	public String getMessage() {
+		return message;
+	}
 
-    public void setMessage(final String message) {
-        this.message = message;
-    }
+	public void setMessage(final String message) {
+		this.message = message;
+	}
 
-    public LatLng getLatLng() {
-        LatLng latLng = new LatLng(lat, lon);
-        return latLng;
-    }
+	public LatLng getLatLng() {
+		LatLng latLng = new LatLng(lat, lon);
+		return latLng;
+	}
 
-    public void setFileUri(String uri) {
-        this.fileUri = uri;
-    }
+	public void setFileUri(String uri) {
+		this.fileUri = uri;
+	}
 
-    public String getFileUri() {
-        return fileUri;
-    }
+	public String getFileUri() {
+		return fileUri;
+	}
 
-    /**
-     * @return path without file:// for a local file:<br/>
-     * file:///path/to/file -> becomes -> /path/to/file
-     */
-    public String getFilePathLocal() {
-        return fileUri.replaceAll("^\\w+://", "");
-    }
+	/**
+	 * @return path without file:// for a local file:<br/>
+	 * file:///path/to/file -> becomes -> /path/to/file
+	 */
+	 public String getFilePathLocal() {
+		 return fileUri.replaceAll("^\\w+://", "");
+	 }
 
-    /**
-     * 
-     * @return filename without path: imgname.jpg
-     */
-    public String getFilename() {
-        File fn = new File(getFilePathLocal());
-        return fn.getName();
-    }
+	 /**
+	  * 
+	  * @return filename without path: imgname.jpg
+	  */
+	 public String getFilename() {
+		 File fn = new File(getFilePathLocal());
+		 return fn.getName();
+	 }
 
-    public boolean isFileLocal() {
-        return fileUri.startsWith("file://");
-    }
+	 public boolean isFileLocal() {
+		 return fileUri.startsWith("file://");
+	 }
 
-    public void save() {
-        parseMessage = new ParseObject("Message");
+	 public void save() {
+		 parseMessage = new ParseObject("Message");
 
-        parseMessage.put("title", title);
-        parseMessage.put("message", message);
-        parseMessage.put("location", new ParseGeoPoint(lat, lon));
-        parseMessage.put("isDeleted", false);
+		 parseMessage.put("title", title);
+		 parseMessage.put("message", message);
+		 parseMessage.put("location", new ParseGeoPoint(lat, lon));
+		 parseMessage.put("isDeleted", false);
 
-        ParseUser user = ParseUser.getCurrentUser();
-        if (user != null && user.getObjectId() != null) {
-            ParseRelation rel = parseMessage.getRelation("creatorUserId");
-            rel.add(user);
-        }
+		 ParseUser user = ParseUser.getCurrentUser();
+		 if (user != null && user.getObjectId() != null) {
+			 ParseRelation rel = parseMessage.getRelation("creatorUserId");
+			 rel.add(user);
 
-        parseMessage.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    Log.i(GlobalConstants.APP_NAME, "Save message to parse successful.");
-                    // TODO Somehow notify the map to draw this marker?
-                } else {
-                    // TODO error handling
-                    Log.e(GlobalConstants.APP_NAME, "Error saving message to parse: " + e.getMessage());
-                    //Toast.makeText(getActivity(), "Uh oh, a save error occurred!", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+			 // ACL permissions
+			 ParseACL msgACL = new ParseACL(user);
+			 msgACL.setPublicReadAccess(true);
+			 parseMessage.setACL(msgACL);
+		 }
 
-        // Try to upload file to Parse
-        if (isFileLocal()) {
-            File file = new File(getFilePathLocal());
-            byte data[];
-            try {
-                data = FileUtils.readFileToByteArray(file);
+		 parseMessage.saveInBackground(new SaveCallback() {
+			 @Override
+			 public void done(ParseException e) {
+				 if (e == null) {
+					 Log.i(GlobalConstants.APP_NAME, "Save message to parse successful.");
+					 // TODO Somehow notify the map to draw this marker?
+				 } else {
+					 // TODO error handling
+					 Log.e(GlobalConstants.APP_NAME, "Error saving message to parse: " + e.getMessage());
+					 //Toast.makeText(getActivity(), "Uh oh, a save error occurred!", Toast.LENGTH_LONG).show();
+				 }
+			 }
+		 });
 
-                parseFile = new ParseFile(getFilename(), data);
-                parseFile.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if (e == null) {
-                            Log.i(GlobalConstants.APP_NAME, "Save message ParseFile successful.");
-                            parseMessage.put("attachment", parseFile);
-                            parseMessage.saveInBackground();
-                        } else {
-                            // TODO error handling
-                            Log.e(GlobalConstants.APP_NAME, "Save message ParseFile failed :(");
-                        }
-                    }
-                });
+		 // Try to upload file to Parse
+		 if (fileUri != null && isFileLocal()) {
+			 File file = new File(getFilePathLocal());
+			 byte data[];
+			 try {
+				 data = FileUtils.readFileToByteArray(file);
 
-            } catch (IOException e) {
-                e.printStackTrace();
-                Log.e(GlobalConstants.APP_NAME, "Could not read file into byte array for ParseFile upload: "
-                        + e.getMessage());
-            }
+				 parseFile = new ParseFile(getFilename(), data);
+				 parseFile.saveInBackground(new SaveCallback() {
+					 @Override
+					 public void done(ParseException e) {
+						 if (e == null) {
+							 Log.i(GlobalConstants.APP_NAME, "Save message ParseFile successful.");
+							 parseMessage.put("attachment", parseFile);
+							 parseMessage.saveInBackground();
+						 } else {
+							 // TODO error handling
+							 Log.e(GlobalConstants.APP_NAME, "Save message ParseFile failed :(");
+						 }
+					 }
+				 });
 
-        }
+			 } catch (IOException e) {
+				 e.printStackTrace();
+				 Log.e(GlobalConstants.APP_NAME, "Could not read file into byte array for ParseFile upload: "
+						 + e.getMessage());
+			 }
+
+		 }
 
 
-    }
+	 }
 
-    public void log() {
-        Log.d(GlobalConstants.APP_NAME, toString());
-    }
+	 public void log() {
+		 Log.d(GlobalConstants.APP_NAME, toString());
+	 }
 
-    @Override
-    public String toString() {
-        return "MESSAGE //Title: " + title
-                + " //Message: " + message
-                + " //Lat/Lon: " + lat + ", " + lon
-                + " //Uri: " + fileUri;
-    }
+	 @Override
+	 public String toString() {
+		 return "MESSAGE ==>Title: " + title
+				 + " ==>Message: " + message
+				 + " ==>Lat/Lon: " + lat + ", " + lon
+				 + " ==>Uri: " + fileUri;
+	 }
+
+	 public boolean hasImage() {
+		 return (fileUri != null && fileUri.matches("([^\\s]+(\\.(?i)(jpg|png|gif|bmp))$)"));
+	 }
 
 
 }
