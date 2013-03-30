@@ -40,14 +40,14 @@ implements GoogleMap.OnMapLongClickListener, GoogleMap.OnMarkerClickListener, Go
 	private List<Marker> mMapMarkers = null;
 	private CameraPosition cameraPosition;
 
+	// Tells us if we have user's location (via location provider in parent activity)
+	// This DroidX2 doesn't seem to want to give me the current location before the mapFragment
+	// is ready to draw the user's location... use this flag to wait for it.
+	private boolean isLocationReady = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		Location currLocation = FootprintActivity.getCurrentLocation();
-		cameraPosition = new CameraPosition(new LatLng(currLocation.getLatitude(),
-				currLocation.getLongitude()), 15, 30, 0); // zoom, tilt, bearing
 
 	}
 
@@ -55,6 +55,7 @@ implements GoogleMap.OnMapLongClickListener, GoogleMap.OnMarkerClickListener, Go
 	public void onStart() {
 		super.onStart();
 		setupMap();
+
 	}
 
 	@Override
@@ -144,8 +145,11 @@ implements GoogleMap.OnMapLongClickListener, GoogleMap.OnMarkerClickListener, Go
 			if (mMap != null) {
 				mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
-				mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-				//new CameraPosition(SAN_FRANCISCO, 15f, 30f, 0f))); // zoom, tilt, bearing
+				if (cameraPosition != null) {
+					mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+					//new CameraPosition(SAN_FRANCISCO, 15f, 30f, 0f))); // zoom, tilt, bearing
+				}
+
 				mMap.setMyLocationEnabled(true);
 				UiSettings settings = mMap.getUiSettings();
 				settings.setAllGesturesEnabled(true);
@@ -161,7 +165,12 @@ implements GoogleMap.OnMapLongClickListener, GoogleMap.OnMarkerClickListener, Go
 				mMap.setOnMapLongClickListener(this);
 				mMap.setOnInfoWindowClickListener(this);
 
-				refreshMapView();
+				Location currLocation = FootprintActivity.getCurrentLocation();
+				if (currLocation != null) {
+					setLocationReady();
+				} else {
+					Log.w(GlobalConstants.APP_NAME, "currLocation is null! wtfmate");
+				}
 			}
 
 		}
@@ -254,14 +263,29 @@ implements GoogleMap.OnMapLongClickListener, GoogleMap.OnMarkerClickListener, Go
 							geo.getLatitude(), geo.getLongitude()));
 			Message msg = mNearbyMessages.get(parseMsg.getObjectId());
 			if (msg != null) {
-				ParseFile pf = (ParseFile) parseMsg.get("attachment");
+				ParseFile pf = (ParseFile) parseMsg.get("attachment");  // or, get thumbnail
 				if (pf != null) {
-					Log.d(GlobalConstants.APP_NAME, "Found attachment file on this parse object. " + pf.getUrl());
+					//Log.d(GlobalConstants.APP_NAME, "Found attachment file on this parse object. " + pf.getUrl());
 					msg.setFileUri(pf.getUrl());
 				}
 			} else {
 				Log.d(GlobalConstants.APP_NAME, "msg null?");
 			}
+		}
+	}
+
+	public void setLocationReady() {
+		Location currLocation = FootprintActivity.getCurrentLocation();
+
+		// This should run just once
+		if (currLocation != null && !isLocationReady) {
+			isLocationReady = true;
+			cameraPosition = new CameraPosition(new LatLng(currLocation.getLatitude(),
+					currLocation.getLongitude()), 15, 30, 0); // zoom, tilt, bearing
+			mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+			//new CameraPosition(SAN_FRANCISCO, 15f, 30f, 0f))); // zoom, tilt, bearing
+
+			refreshMapView();
 		}
 	}
 
